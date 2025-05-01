@@ -1,4 +1,4 @@
-# d1
+# D1
 ## ok() to turn Reuslt to Option in filter_map()
 - use `?` to return quick
 
@@ -17,3 +17,35 @@ let numbers: Vec<usize> = reader
 HashSet is like a labeled box which we can jump to the box to check, thus O(1)
 BTTreeSet is sorted thus O(logN), but can return sorted result, like all items
 in range(a_to_b).
+
+# D2
+
+I used `iter.next()` multiple times to pattern-match [1-3 a: abcdef].
+But this is smarter:
+
+```rust
+let (range, char_part, password) = match line.split_whitespace().collect::<Vec<_>>()[..] {
+    [range, char_part, password] => (range, char_part, password),
+    _ => return Err("Invalid line format".into()),
+};
+
+let (min, max) = {
+    let (min, max) = range.split_once('-').ok_or("Invalid range format")?;
+    (min.parse::<usize>()?, max.parse::<usize>()?)
+};
+
+```
+
+Interestingly, the FP way achieving the same:
+
+```rust
+let parts: [&str; 3] = vec.split_whitespace().collect::<Vec<_>>()
+    .try_into()
+    .map_err(|_| "Expected exactly 3 parts")?;
+
+let (first, second) = range
+    .split_once('-')
+    .ok_or("Invalid range format")
+    .and_then(|(a, b)| Ok((a.parse::<usize>()? - 1, b.parse::<usize>()? - 1)))?;
+
+```
