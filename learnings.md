@@ -20,7 +20,7 @@ in range(a_to_b).
 
 # D2
 
-I used `iter.next()` multiple times to pattern-match [1-3 a: abcdef].
+## I used `iter.next()` multiple times to pattern-match [1-3 a: abcdef].
 But this is smarter:
 
 ```rust
@@ -47,5 +47,39 @@ let (first, second) = range
     .split_once('-')
     .ok_or("Invalid range format")
     .and_then(|(a, b)| Ok((a.parse::<usize>()? - 1, b.parse::<usize>()? - 1)))?;
+
+```
+
+# D3
+
+## `map()` v.s. `and_then()` in `Result<T>`
+- map() won't produce new error, it only maps OK value from a to b
+- and_then() returns a Result, the inner logic to process incoming OK value can
+  propgrate new errors or use `?`.
+
+## collect() over iterator with item = Result<T, E>
+There can be two built-in ways as below. So we need turbofish or specific type.
+- Vec<Result<T, E>>
+- Result<Vec<T>, E> (i.e. all-or-none)
+
+## FP can save intermediate variables for `for` loop
+
+```rust
+let mut count = 0;
+let mut column_index = 0;
+
+for row in maze.iter().skip(1) {
+    column_index += 3;
+    if row[column_index % width] {
+        count += 1;
+    }
+}
+```
+
+```rust
+let count = maze.iter().skip(1).enumerate().filter(|(i, row)| {
+    let col = (i * 3) % width;
+    row[col]
+}).count();
 
 ```
