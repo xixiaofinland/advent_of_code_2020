@@ -6,6 +6,50 @@ use std::{
 
 use crate::AoCResult;
 
+pub fn solve_day4a() -> AoCResult<usize> {
+    let reader = BufReader::new(File::open("data/input_day4a.txt")?);
+    let mut passports = Vec::new();
+    let mut current_passport = String::new();
+
+    for line in reader.lines() {
+        let line = line?;
+        if line.trim().is_empty() {
+            if !current_passport.is_empty() {
+                passports.push(current_passport);
+                current_passport = String::new();
+            }
+        } else {
+            let data_to_push = if current_passport.is_empty() {
+                &line
+            } else {
+                &format!(" {}", line)
+            };
+
+            current_passport.push_str(data_to_push);
+        }
+    }
+    if !current_passport.is_empty() {
+        passports.push(current_passport);
+    }
+
+    let passport_maps: Vec<HashMap<&str, &str>> = passports
+        .iter()
+        .map(|p| {
+            p.split_whitespace()
+                .filter_map(|item| item.split_once(':'))
+                .collect()
+        })
+        .collect();
+
+    let required = ["byr", "iyr", "eyr", "hgt", "hcl", "ecl", "pid"];
+    let count = passport_maps
+        .iter()
+        .filter(|p| required.iter().all(|key| p.contains_key(key)))
+        .count();
+
+    Ok(count)
+}
+
 pub fn solve_day4b() -> AoCResult<usize> {
     let reader = BufReader::new(File::open("data/input_day4a.txt")?);
     let mut passports = Vec::new();
