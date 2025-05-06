@@ -1,4 +1,5 @@
 use std::{
+    collections::HashSet,
     fs::File,
     io::{BufRead, BufReader},
 };
@@ -18,13 +19,34 @@ pub fn solve_day5a() -> AoCResult<usize> {
     Ok(max_id)
 }
 
+pub fn solve_day5b() -> AoCResult<usize> {
+    let reader = BufReader::new(File::open("data/input_day5a.txt")?);
+    let mut all_seats: HashSet<_> = (0..1024).collect();
+
+    for line in reader.lines() {
+        let seat_id = parse_ticket(&line?);
+        all_seats.remove(&seat_id);
+    }
+
+    all_seats.retain(|n| (10..1015).contains(n));
+
+    let result = all_seats
+        .iter()
+        .find(|&&n| !all_seats.contains(&(n - 1)) && !all_seats.contains(&(n + 1)))
+        .copied()
+        .ok_or("No valid seat found")?;
+
+    Ok(result)
+}
+
 fn parse_ticket(pass: &str) -> usize {
     pass.chars().fold(0, |acc, c| {
-        acc << 1 | match c {
-            'B' | 'R' => 1,
-            'F' | 'L' => 0,
-            _ => panic!("Invalid character in boarding pass"),
-        }
+        acc << 1
+            | match c {
+                'B' | 'R' => 1,
+                'F' | 'L' => 0,
+                _ => panic!("Invalid character in boarding pass"),
+            }
     })
 }
 

@@ -5,7 +5,7 @@ use aoc_2020::day4::*;
 use aoc_2020::day5::*;
 
 pub fn main() {
-    match solve_day5a() {
+    match solve_day5b() {
         Ok(count) => {
             println!("Result: {}", count);
         }
@@ -13,6 +13,14 @@ pub fn main() {
             eprintln!("Err: {}", e);
         }
     }
+    // match solve_day5a() {
+    //     Ok(count) => {
+    //         println!("Result: {}", count);
+    //     }
+    //     Err(e) => {
+    //         eprintln!("Err: {}", e);
+    //     }
+    // }
     // match solve_day4b() {
     //     Ok(count) => {
     //         println!("Result: {}", count);

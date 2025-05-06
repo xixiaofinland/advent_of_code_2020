@@ -83,3 +83,8 @@ let count = maze.iter().skip(1).enumerate().filter(|(i, row)| {
 }).count();
 
 ```
+
+# D5
+
+c.clone().into_iter() v.s. c.iter().copied() v.s. c.iter().cloned()
+When the element is `Copy` then use `copied()`
