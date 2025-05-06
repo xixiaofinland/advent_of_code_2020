@@ -67,7 +67,5 @@ fn calculate(answers: &[String]) -> usize {
             }
         }
     }
-    let result = exists_in_all.len();
-
-    result
+     exists_in_all.len()
 }
