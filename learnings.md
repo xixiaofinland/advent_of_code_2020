@@ -88,3 +88,8 @@ let count = maze.iter().skip(1).enumerate().filter(|(i, row)| {
 
 c.clone().into_iter() v.s. c.iter().copied() v.s. c.iter().cloned()
 When the element is `Copy` then use `copied()`
+
+# D6
+
+`hash_map.extend(line.chars())` is better than `for c in line chars()
+{hash_map.insert(c);}`
