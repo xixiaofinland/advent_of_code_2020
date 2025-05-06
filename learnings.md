@@ -93,3 +93,20 @@ When the element is `Copy` then use `copied()`
 
 `hash_map.extend(line.chars())` is better than `for c in line chars()
 {hash_map.insert(c);}`
+
+functional answer is cool!
+
+```rust
+let input = std::fs::read_to_string("data/input_day6a.txt")?
+let total: usize = input
+        .split("\n\n")
+        .map(|group| {
+            group
+                .chars()
+                .filter(|c| c.is_ascii_lowercase())  // ignores `\n`
+                .collect::<HashSet<_>>()
+                .len()
+        })
+        .sum();
+
+```

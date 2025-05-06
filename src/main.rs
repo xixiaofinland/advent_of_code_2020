@@ -6,7 +6,7 @@ use aoc_2020::day5::*;
 use aoc_2020::day6::*;
 
 pub fn main() {
-    match solve_day6a() {
+    match solve_day6b() {
         Ok(count) => {
             println!("Result: {}", count);
         }
@@ -14,6 +14,14 @@ pub fn main() {
             eprintln!("Err: {}", e);
         }
     }
+    // match solve_day6a() {
+    //     Ok(count) => {
+    //         println!("Result: {}", count);
+    //     }
+    //     Err(e) => {
+    //         eprintln!("Err: {}", e);
+    //     }
+    // }
     // match solve_day5b() {
     //     Ok(count) => {
     //         println!("Result: {}", count);
@@ -38,7 +46,6 @@ pub fn main() {
     //         eprintln!("Err: {}", e);
     //     }
     // }
-
     // match solve_day4a() {
     //     Ok(count) => {
     //         println!("Result: {}", count);
@@ -47,7 +54,6 @@ pub fn main() {
     //         eprintln!("Err: {}", e);
     //     }
     // }
-
     // match solve_day3b() {
     //     Ok(count) => {
     //         println!("Result: {}", count);
@@ -56,7 +62,6 @@ pub fn main() {
     //         eprintln!("Err: {}", e);
     //     }
     // }
-
     // match solve_day2b() {
     //     Ok(count) => {
     //         println!("Result: {}", count);
@@ -65,7 +70,6 @@ pub fn main() {
     //         eprintln!("Err: {}", e);
     //     }
     // }
-
     // match solve_day2a() {
     //     Ok(count) => {
     //         println!("Result: {}", count);
@@ -74,7 +78,6 @@ pub fn main() {
     //         eprintln!("Err: {}", e);
     //     }
     // }
-
     // match solve_day1b() {
     //     Ok(Some(result)) => {
     //         println!("Result: {}", result);
@@ -86,7 +89,6 @@ pub fn main() {
     //         eprintln!("Err: {}", e);
     //     }
     // }
-
     // match solve_day1a() {
     //     Ok(Some(result)) => {
     //         println!("Result: {}", result);
