@@ -111,8 +111,8 @@ let total: usize = input
 
 ```
 
-intersection `BitAnd` & for `set` (not Vec) and defensive code
-`fold()` usage
+- intersection `BitAnd` & for `set` (not Vec) and defensive code
+- `fold()` usage
 
 ```rust
 fn intersection_size(group: &[String]) -> usize {
@@ -126,7 +126,9 @@ fn intersection_size(group: &[String]) -> usize {
 
 ```
 
-functional is so compact and no need to handle the last element edge case:
+Functional is so compact!
+- no need to handle the last element edge case:
+- `reduce()` replaces `fold()`
 
 ```rust
 pub fn solve_day6b_ff() -> AoCResult<usize> {
