@@ -110,3 +110,40 @@ let total: usize = input
         .sum();
 
 ```
+
+intersection `BitAnd` & for `set` (not Vec) and defensive code
+`fold()` usage
+
+```rust
+fn intersection_size(group: &[String]) -> usize {
+    let mut iter = group.iter().map(|s| s.chars().collect::<HashSet<_>>());
+    if let Some(first) = iter.next() {
+        iter.fold(first, |acc, set| &acc & &set).len()
+    } else {
+        0
+    }
+}
+
+```
+
+functional is so compact and no need to handle the last element edge case:
+
+```rust
+pub fn solve_day6b_ff() -> AoCResult<usize> {
+    let input = std::fs::read_to_string("data/input_day6a.txt")?;
+
+    let total = input
+        .split("\n\n") // group by blank lines
+        .map(|group| {
+            group
+                .lines()
+                .map(|line| line.chars().collect::<HashSet<_>>())
+                .reduce(|a, b| &a & &b) // set intersection
+                .map_or(0, |set| set.len()) // default to 0 if group is empty
+        })
+        .sum();
+
+    Ok(total)
+}
+
+```
