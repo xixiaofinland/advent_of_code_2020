@@ -15,7 +15,6 @@ pub fn solve_day7a() -> AoCResult<usize> {
     for line in reader.lines() {
         let line = line?;
         let graph = parse(&line);
-        eprintln!("gopro[294]: day7.rs:17: graph={:#?}", graph);
     }
     Ok(0)
 }

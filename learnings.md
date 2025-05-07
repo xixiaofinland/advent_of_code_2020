@@ -149,3 +149,11 @@ pub fn solve_day6b_ff() -> AoCResult<usize> {
 }
 
 ```
+
+# d7
+
+- Forward Graph:
+- Inverse/Reverse Graph:
+- BFS v.s. DFS
+
+HashMap (O(1)) is better than Vec to store a graph info (O(n)).
