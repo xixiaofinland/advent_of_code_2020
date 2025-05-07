@@ -54,7 +54,8 @@ pub fn solve_day6b() -> AoCResult<usize> {
 fn intersection_size(group: &[String]) -> usize {
     let mut iter = group.iter().map(|s| s.chars().collect::<HashSet<_>>());
     if let Some(first) = iter.next() {
-        iter.fold(first, |acc, set| &acc & &set).len()
+        let intersection = iter.fold(first, |acc, set| &acc & &set);
+        intersection.len()
     } else {
         0
     }
