@@ -1,25 +1,23 @@
 use crate::AoCResult;
 use std::{
+    collections::HashMap,
     fs::File,
     io::{BufRead, BufReader},
 };
 
-struct Bag {
-    parent: String,
-    children: Vec<(usize, String)>,
-}
-
 pub fn solve_day7a() -> AoCResult<usize> {
     let file = File::open("data/input_day7a_simple.txt")?;
     let reader = BufReader::new(file);
+    let mut inverse_graph: HashMap<String, Vec<String>> = HashMap::new();
     for line in reader.lines() {
         let line = line?;
-        let graph = parse(&line);
+        parse(&line, &mut inverse_graph);
     }
-    Ok(0)
+
+    Ok(count(&inverse_graph))
 }
 
-fn parse(line: &str) -> (String, Vec<(usize, String)>) {
+fn parse(line: &str, inverse_graph: &mut HashMap<String, Vec<String>>) {
     let (parent, children) = line
         .strip_suffix('.')
         .unwrap()
@@ -27,20 +25,19 @@ fn parse(line: &str) -> (String, Vec<(usize, String)>) {
         .unwrap();
     let parent = parent.strip_suffix(" bags").unwrap().to_string();
 
-    let children_vec = if children == "no other bags" {
-        vec![]
-    } else {
-        children
-            .split(", ")
-            .map(|c| {
-                let mut words = c.split_whitespace();
-                let count = words.next().unwrap().parse::<usize>().unwrap();
-                let color = words.take(2).collect::<Vec<_>>().join(" ");
-                (count, color)
-            })
-            .collect()
+    if children != "no other bags" {
+        children.split(", ").for_each(|c| {
+            let mut words = c.split_whitespace();
+            let _count = words.next().unwrap().parse::<usize>().unwrap();
+            let color = words.take(2).collect::<Vec<_>>().join(" ");
+            inverse_graph.entry(color).or_default().push(parent.clone());
+        })
     };
-    (parent, children_vec)
+}
+
+fn count(inverse_graph: &HashMap<String, Vec<String>>) -> usize {
+    // do DFS or BFS here
+    0
 }
 
 pub fn solve_day7b() -> AoCResult<usize> {
