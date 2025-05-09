@@ -154,6 +154,8 @@ pub fn solve_day6b_ff() -> AoCResult<usize> {
 
 - Forward Graph:
 - Inverse/Reverse Graph:
-- BFS v.s. DFS
+- BFS v.s. DFS (Vec v.s. VecDeque)
 
 HashMap (O(1)) is better than Vec to store a graph info (O(n)).
+
+count() v.s. count_fp()
