@@ -159,3 +159,39 @@ pub fn solve_day6b_ff() -> AoCResult<usize> {
 HashMap (O(1)) is better than Vec to store a graph info (O(n)).
 
 count() v.s. count_fp()
+
+---
+
+d7b recursion construct: best answer is to model the problem in one method
+`count_total_bags()`. Mine works but it has `count_self() + count_child()` which
+works but awkward.
+
+```rust
+count_total_bags("shiny gold", &graph) - 1;
+
+fn count_total_bags(name: &str, graph: &HashMap<String, Vec<(usize, String)>>) -> usize {
+    let mut total = 1;
+    if let Some(children) = graph.get(name) {
+        for (child_size, child_name) in children {
+            total += child_size * count_total_bags(child_name, graph);
+        }
+    }
+    total
+}
+```
+
+fp style: learn `unwrap_or()` for Option<T> and Result<T>
+```rust
+fn count_total_fp(bag: &str, graph: &HashMap<String, Vec<(usize, String)>>) -> usize {
+    1 + graph
+        .get(bag)
+        .map(|children| {
+            children
+                .iter()
+                .map(|(count, child)| count * count_total_fp(child, graph))
+                .sum::<usize>()
+        })
+        .unwrap_or(0)
+}
+
+```
