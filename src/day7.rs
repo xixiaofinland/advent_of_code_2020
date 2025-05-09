@@ -1,12 +1,12 @@
 use crate::AoCResult;
 use std::{
-    collections::HashMap,
+    collections::{HashMap, HashSet},
     fs::File,
     io::{BufRead, BufReader},
 };
 
 pub fn solve_day7a() -> AoCResult<usize> {
-    let file = File::open("data/input_day7a_simple.txt")?;
+    let file = File::open("data/input_day7a.txt")?;
     let reader = BufReader::new(file);
     let mut inverse_graph: HashMap<String, Vec<String>> = HashMap::new();
     for line in reader.lines() {
@@ -36,8 +36,36 @@ fn parse(line: &str, inverse_graph: &mut HashMap<String, Vec<String>>) {
 }
 
 fn count(inverse_graph: &HashMap<String, Vec<String>>) -> usize {
-    // do DFS or BFS here
-    0
+    let mut visited = HashSet::new();
+    let mut stack = vec!["shiny gold".to_string()];
+
+    while let Some(bag) = stack.pop() {
+        if let Some(parents) = inverse_graph.get(&bag) {
+            for parent in parents {
+                if visited.insert(parent.clone()) {
+                    stack.push(parent.clone());
+                }
+            }
+        }
+    }
+
+    visited.len()
+}
+
+fn count_fp(inverse_graph: &HashMap<String, Vec<String>>) -> usize {
+    let mut visited = HashSet::new();
+    let mut stack = vec!["shiny gold".to_string()];
+
+    while let Some(bag) = stack.pop() {
+        inverse_graph
+            .get(&bag)
+            .into_iter()
+            .flatten()
+            .filter(|parent| visited.insert((*parent).clone()))
+            .for_each(|parent| stack.push(parent.clone()));
+    }
+
+    visited.len()
 }
 
 pub fn solve_day7b() -> AoCResult<usize> {
