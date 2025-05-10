@@ -11,15 +11,12 @@ pub fn solve_day8a() -> AoCResult<usize> {
         .lines()
         .filter_map(|line_result| {
             line_result.ok().and_then(|line| {
-                line.split_once(" ")
-                    .map(|(first, second)| (first.to_string(), second.to_string()))
+                line.split_once(" ").and_then(|(first, second)| {
+                    second.parse::<i32>().ok().map(|v| (first.to_string(), v))
+                })
             })
         })
-        .collect::<Vec<(String, String)>>();
-
-    // reader
-    //     .lines()
-    //     .map(|l| l.map(|line| line.split_once(" ").unwrap()));
+        .collect::<Vec<(String, i32)>>();
 
     Ok(0)
 }
