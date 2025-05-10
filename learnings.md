@@ -195,3 +195,25 @@ fn count_total_fp(bag: &str, graph: &HashMap<String, Vec<(usize, String)>>) -> u
 }
 
 ```
+# d8
+
+Read the code below to see how the chaining flows.
+
+`and_then()` is  essentially a way to chain operations that each might return
+None, without having to nest a lot of if let Some(_) statements. It's
+particularly useful for sequential operations that each might fail.
+
+In our code example, and_then() links `line_result.ok()` with `split_once()`,
+propagating None if either operation fails.
+
+```rust
+let content = reader
+    .lines()
+    .filter_map(|line_result| {
+        line_result.ok().and_then(|line| {
+            line.split_once(" ")
+                .map(|(first, second)| (first.to_string(), second.to_string()))
+        })
+    })
+    .collect::<Vec<(String, String)>>();
+```
