@@ -6,7 +6,7 @@ use std::{
 };
 
 pub fn solve_day8a() -> AoCResult<i32> {
-    let file = File::open("data/input_day8a_simple.txt")?;
+    let file = File::open("data/input_day8a.txt")?;
     let reader = BufReader::new(file);
     let content = reader
         .lines()
@@ -31,10 +31,7 @@ fn calculate(
     value: &mut i32,
     visited: &mut HashSet<i32>,
 ) -> i32 {
-    eprintln!();
     if !visited.insert(index) {
-        println!("Done index: {}", index);
-        println!("Done value: {}", value);
         return *value;
     }
 
