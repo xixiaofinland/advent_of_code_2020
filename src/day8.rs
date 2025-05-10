@@ -1,11 +1,12 @@
 use crate::AoCResult;
 use std::{
+    collections::HashSet,
     fs::File,
     io::{BufRead, BufReader},
 };
 
-pub fn solve_day8a() -> AoCResult<usize> {
-    let file = File::open("data/input_day8a_simple.txt")?;
+pub fn solve_day8a() -> AoCResult<i32> {
+    let file = File::open("data/input_day8a.txt")?;
     let reader = BufReader::new(file);
     let content = reader
         .lines()
@@ -18,7 +19,37 @@ pub fn solve_day8a() -> AoCResult<usize> {
         })
         .collect::<Vec<(String, i32)>>();
 
-    Ok(0)
+    let mut value: i32 = 0;
+    let mut visited: HashSet<i32> = HashSet::new();
+    let result = calculate(1, &content, &mut value, &mut visited);
+    Ok(result)
+}
+
+fn calculate(
+    index: i32,
+    content: &Vec<(String, i32)>,
+    value: &mut i32,
+    visited: &mut HashSet<i32>,
+) -> i32 {
+    eprintln!("gopro[309]: day8.rs:34: index={:#?}", index);
+    eprintln!("gopro[313]: day8.rs:36: value={:#?}", value);
+    eprintln!();
+    if !visited.insert(index) {
+        println!("Done index: {}", index);
+        println!("Done value: {}", value);
+        return *value;
+    }
+
+    let (op, num) = content.get(usize::try_from(index).unwrap()).unwrap();
+    match op.as_str() {
+        "nop" => calculate(index + 1, content, value, visited),
+        "acc" => {
+            *value += num;
+            calculate(index + 1, content, value, visited)
+        }
+        "jmp" => calculate(index + num, content, value, visited),
+        _ => unreachable!(),
+    }
 }
 
 pub fn solve_day8a_with_error_handling() -> AoCResult<usize> {
