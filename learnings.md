@@ -223,7 +223,8 @@ particularly useful for sequential operations that each might fail.
 In our code example, and_then() links `line_result.ok()` with `split_once()`,
 propagating None if either operation fails.
 
-`filter_map()` will silently drop all None. If we wanna proper error handling:
+`filter_map()` will silently drop all None. If we wanna proper error handling,
+we can switch to `map()` and let its clojure return Result as:
 
 ```rust
 pub fn solve_day8a_with_error_handling() -> AoCResult<usize> {
@@ -235,13 +236,11 @@ pub fn solve_day8a_with_error_handling() -> AoCResult<usize> {
         .map(|line_result| -> AoCResult<(String, String)> {
             let line = line_result?; // Propagate IO errors
 
-            // Handle parsing errors with meaningful messages
-            let (first, second) = line.split_once(" ").ok_or_else(|| {
-                std::io::Error::new(
-                    std::io::ErrorKind::InvalidData,
-                    format!("Invalid format: Line does not contain a space: '{}'", line),
-                )
-            })?;
+            // The simplest error option with Rust 2021+
+            // as String has implemented std::error::Error
+            let (first, second) = line
+                .split_once(" ")
+                .ok_or(format!("Line missing space: '{}'", line))?;
 
             Ok((first.to_string(), second.to_string()))
         })

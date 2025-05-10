@@ -33,13 +33,11 @@ pub fn solve_day8a_with_error_handling() -> AoCResult<usize> {
         .map(|line_result| -> AoCResult<(String, String)> {
             let line = line_result?; // Propagate IO errors
 
-            // Handle parsing errors with meaningful messages
-            let (first, second) = line.split_once(" ").ok_or_else(|| {
-                std::io::Error::new(
-                    std::io::ErrorKind::InvalidData,
-                    format!("Invalid format: Line does not contain a space: '{}'", line),
-                )
-            })?;
+            // The simplest error option with Rust 2021+
+            // as String has implemented std::error::Error
+            let (first, second) = line
+                .split_once(" ")
+                .ok_or(format!("Line missing space: '{}'", line))?;
 
             Ok((first.to_string(), second.to_string()))
         })
