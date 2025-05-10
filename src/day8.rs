@@ -23,3 +23,30 @@ pub fn solve_day8a() -> AoCResult<usize> {
 
     Ok(0)
 }
+
+pub fn solve_day8a_with_error_handling() -> AoCResult<usize> {
+    let file = File::open("data/input_day8a_simple.txt")?;
+    let reader = BufReader::new(file);
+
+    let parsed_lines: Vec<(String, String)> = reader
+        .lines()
+        .map(|line_result| -> AoCResult<(String, String)> {
+            let line = line_result?; // Propagate IO errors
+
+            // Handle parsing errors with meaningful messages
+            let (first, second) = line.split_once(" ").ok_or_else(|| {
+                std::io::Error::new(
+                    std::io::ErrorKind::InvalidData,
+                    format!("Invalid format: Line does not contain a space: '{}'", line),
+                )
+            })?;
+
+            Ok((first.to_string(), second.to_string()))
+        })
+        .collect::<Result<Vec<_>, _>>()?; // Collect and propagate any errors
+
+    // Continue processing with parsed_lines
+    println!("Successfully parsed {} lines", parsed_lines.len());
+
+    Ok(0) // Replace with actual result calculation
+}

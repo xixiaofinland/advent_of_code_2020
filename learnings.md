@@ -209,12 +209,47 @@ let content = reader
         })
     })
     .collect::<Vec<(String, String)>>();
+
 ```
 
-`and_then()` is  essentially a way to chain operations that each might return
+`filter_map()` takes care of both filtering out Nones and unwrapping Some. It
+expects the inner clojure returns an Option<T> and will produce an iterator with
+only extracted values from Some(T).
+
+`and_then()` is essentially a way to chain operations that each might return
 None, without having to nest a lot of if let Some(_) statements. It's
 particularly useful for sequential operations that each might fail.
 
 In our code example, and_then() links `line_result.ok()` with `split_once()`,
 propagating None if either operation fails.
 
+`filter_map()` will silently drop all None. If we wanna proper error handling:
+
+```rust
+pub fn solve_day8a_with_error_handling() -> AoCResult<usize> {
+    let file = File::open("data/input_day8a_simple.txt")?;
+    let reader = BufReader::new(file);
+
+    let parsed_lines: Vec<(String, String)> = reader
+        .lines()
+        .map(|line_result| -> AoCResult<(String, String)> {
+            let line = line_result?; // Propagate IO errors
+
+            // Handle parsing errors with meaningful messages
+            let (first, second) = line.split_once(" ").ok_or_else(|| {
+                std::io::Error::new(
+                    std::io::ErrorKind::InvalidData,
+                    format!("Invalid format: Line does not contain a space: '{}'", line),
+                )
+            })?;
+
+            Ok((first.to_string(), second.to_string()))
+        })
+        .collect::<Result<Vec<_>, _>>()?; // Collect and propagate any errors
+
+    // Continue processing with parsed_lines
+    println!("Successfully parsed {} lines", parsed_lines.len());
+
+    Ok(0) // Replace with actual result calculation
+}
+```
