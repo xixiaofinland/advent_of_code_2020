@@ -6,7 +6,7 @@ use std::{
 };
 
 pub fn solve_day8a() -> AoCResult<i32> {
-    let file = File::open("data/input_day8a.txt")?;
+    let file = File::open("data/input_day8a_simple.txt")?;
     let reader = BufReader::new(file);
     let content = reader
         .lines()
