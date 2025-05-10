@@ -21,7 +21,7 @@ pub fn solve_day8a() -> AoCResult<i32> {
 
     let mut value: i32 = 0;
     let mut visited: HashSet<i32> = HashSet::new();
-    let result = calculate(1, &content, &mut value, &mut visited);
+    let result = calculate(0, &content, &mut value, &mut visited);
     Ok(result)
 }
 
@@ -31,8 +31,6 @@ fn calculate(
     value: &mut i32,
     visited: &mut HashSet<i32>,
 ) -> i32 {
-    eprintln!("gopro[309]: day8.rs:34: index={:#?}", index);
-    eprintln!("gopro[313]: day8.rs:36: value={:#?}", value);
     eprintln!();
     if !visited.insert(index) {
         println!("Done index: {}", index);
