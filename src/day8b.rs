@@ -5,7 +5,7 @@ use std::{
     io::{BufRead, BufReader},
 };
 
-#[derive(Clone)]
+#[derive(Copy, Clone)]
 enum Instruction {
     Nop(i32),
     Acc(i32),
@@ -26,7 +26,7 @@ pub fn solve_day8b() -> AoCResult<i32> {
     let path = find_termination_path(&program);
 
     for &i in &path {
-        let original = program[i].clone();
+        let original = program[i];
 
         program[i] = match original {
             Instruction::Jmp(v) => Instruction::Nop(v),
@@ -102,3 +102,4 @@ fn run_until_loop(program: &[Instruction]) -> (i32, bool) {
 
     (acc, true) // terminated normally
 }
+
