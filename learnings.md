@@ -150,7 +150,7 @@ pub fn solve_day6b_ff() -> AoCResult<usize> {
 
 ```
 
-# d7
+# D7
 
 - Forward Graph:
 - Inverse/Reverse Graph:
@@ -195,7 +195,7 @@ fn count_total_fp(bag: &str, graph: &HashMap<String, Vec<(usize, String)>>) -> u
 }
 
 ```
-# d8
+# D8
 
 Read the code below to see how the chaining flows.
 
@@ -263,3 +263,5 @@ enum Instruction {
     Jmp(i32),
 }
 ```
+
+Better algorithm: track original path and flip only ones on the path. Check `day8b.rs`
