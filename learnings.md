@@ -254,3 +254,12 @@ pub fn solve_day8a_with_error_handling() -> AoCResult<usize> {
 ```
 
 A learning tip: ask GPT "quick reference for common AoC input parsing idioms in Rust"
+
+The enum construct is better!
+```rust
+enum Instruction {
+    Nop,
+    Acc(i32),
+    Jmp(i32),
+}
+```

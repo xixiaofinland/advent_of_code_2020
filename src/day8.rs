@@ -5,46 +5,63 @@ use std::{
     io::{BufRead, BufReader},
 };
 
+enum Instruction {
+    Nop,
+    Acc(i32),
+    Jmp(i32),
+}
+
 pub fn solve_day8a() -> AoCResult<i32> {
     let file = File::open("data/input_day8a.txt")?;
     let reader = BufReader::new(file);
-    let content = reader
+    let program = reader
         .lines()
-        .filter_map(|line_result| {
-            line_result.ok().and_then(|line| {
-                line.split_once(" ").and_then(|(first, second)| {
-                    second.parse::<i32>().ok().map(|v| (first.to_string(), v))
-                })
+        .map(|line_result| {
+            let line = line_result?;
+            parse_instruction(&line).ok_or_else(|| {
+                std::io::Error::new(
+                    std::io::ErrorKind::InvalidData,
+                    format!("Invalid instruction: {}", line),
+                )
             })
         })
-        .collect::<Vec<(String, i32)>>();
+        .collect::<Result<Vec<_>, _>>()?;
 
-    let mut value: i32 = 0;
-    let mut visited: HashSet<i32> = HashSet::new();
-    let result = calculate(0, &content, &mut value, &mut visited);
-    Ok(result)
+    Ok(run_until_loop(&program))
 }
 
-fn calculate(
-    index: i32,
-    content: &Vec<(String, i32)>,
-    value: &mut i32,
-    visited: &mut HashSet<i32>,
-) -> i32 {
-    if !visited.insert(index) {
-        return *value;
+fn parse_instruction(line: &str) -> Option<Instruction> {
+    let (op, num) = line.split_once(' ')?;
+    let value = num.parse::<i32>().ok()?;
+    match op {
+        "nop" => Some(Instruction::Nop),
+        "acc" => Some(Instruction::Acc(value)),
+        "jmp" => Some(Instruction::Jmp(value)),
+        _ => None,
+    }
+}
+
+fn run_until_loop(program: &[Instruction]) -> i32 {
+    let mut acc = 0;
+    let mut visited = HashSet::new();
+    let mut index: i32 = 0;
+
+    while index >= 0 && (index as usize) < program.len() {
+        if !visited.insert(index) {
+            break;
+        }
+
+        match program[index as usize] {
+            Instruction::Nop => index += 1,
+            Instruction::Acc(v) => {
+                acc += v;
+                index += 1;
+            }
+            Instruction::Jmp(v) => index += v,
+        }
     }
 
-    let (op, num) = content.get(usize::try_from(index).unwrap()).unwrap();
-    match op.as_str() {
-        "nop" => calculate(index + 1, content, value, visited),
-        "acc" => {
-            *value += num;
-            calculate(index + 1, content, value, visited)
-        }
-        "jmp" => calculate(index + num, content, value, visited),
-        _ => unreachable!(),
-    }
+    acc
 }
 
 pub fn solve_day8a_with_error_handling() -> AoCResult<usize> {
@@ -53,7 +70,7 @@ pub fn solve_day8a_with_error_handling() -> AoCResult<usize> {
 
     let parsed_lines: Vec<(String, String)> = reader
         .lines()
-        .map(|line_result| -> AoCResult<(String, String)> {
+        .map(|line_result| -> AoCResult<_> {
             let line = line_result?; // Propagate IO errors
 
             // The simplest error option with Rust 2021+
