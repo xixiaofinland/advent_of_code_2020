@@ -274,5 +274,8 @@ get the value instead of deref.
 
 ## d9a performance:
 
-"remove oldest element sums and add the new" is the least computation way, but hard to model with correct data struct.
-sliding window with hashset strikes the balance in the middle.
+"remove oldest element sums and add the new" is the least computation way, but
+hard to model with correct data struct (VecDeque). sliding window with hashset strikes the
+balance in the middle.
+
+sliding window also uses the "2-sum" problem solution with "one-pass" way (Day1)
