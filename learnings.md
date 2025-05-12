@@ -265,3 +265,7 @@ enum Instruction {
 ```
 
 Better algorithm: track original path and flip only ones on the path. Check `day8b.rs`
+
+# D9
+
+Use `find().map()` to return early in an iterator.
