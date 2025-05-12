@@ -271,3 +271,8 @@ Better algorithm: track original path and flip only ones on the path. Check `day
 Use `find().map()` to return early in an iterator.
 When iter element is a reference `&`, it's more idiomatic to use `copied()` to
 get the value instead of deref.
+
+## d9a performance:
+
+"remove oldest element sums and add the new" is the least computation way, but hard to model with correct data struct.
+sliding window with hashset strikes the balance in the middle.
