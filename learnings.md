@@ -269,3 +269,5 @@ Better algorithm: track original path and flip only ones on the path. Check `day
 # D9
 
 Use `find().map()` to return early in an iterator.
+When iter element is a reference `&`, it's more idiomatic to use `copied()` to
+get the value instead of deref.

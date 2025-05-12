@@ -28,7 +28,8 @@ fn validate(preceding_size: usize, content: &[usize]) -> usize {
             let collection = build_collection(*i, preceding_size, content);
             !collection.contains(item)
         })
-        .map(|(_, item)| *item)
+        .map(|(_, item)| item)
+        .copied()
         .unwrap_or(0)
 }
 
