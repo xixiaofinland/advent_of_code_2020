@@ -17,5 +17,5 @@ pub fn solve_day9b() -> AoCResult<usize> {
         .collect();
 
     let preceding_size = 25;
-    Ok(validate(preceding_size, &content))
+    Ok(0)
 }
