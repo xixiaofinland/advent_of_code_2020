@@ -268,13 +268,15 @@ Better algorithm: track original path and flip only ones on the path. Check `day
 
 # D9
 
-Use `find().map()` to return early in an iterator.
 When iter element is a reference `&`, it's more idiomatic to use `copied()` to
 get the value instead of deref.
 
+Both `any()` and `find()` return early!
 Use `iter().any()` in `validate()`: it is short-circuiting; in other words, it will stop processing
 as soon as it finds a `true`, given that no matter what else happens,
 the result will also be `true`.
+Use `.find()` when you need to access or use the matching value, not just know
+it exists.
 
 
 ## d9a performance:

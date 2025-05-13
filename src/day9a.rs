@@ -28,7 +28,7 @@ pub fn solve_day9a() -> AoCResult<usize> {
         }
     }
 
-    Ok(0)
+    return Err("No invalid number found in the sequence".into());
 }
 
 fn validate(queue: &VecDeque<usize>, num: usize) -> bool {
