@@ -286,3 +286,9 @@ hard to model with correct data struct (VecDeque). sliding window with hashset s
 balance in the middle.
 
 sliding window also uses the "2-sum" problem solution with "one-pass" way (Day1)
+
+## d9b
+
+I couldn't figure out a good solution but relied on GPT.
+The sliding window is smart! It requires 1) Contiguous Elements 2) All Positive
+Numbers

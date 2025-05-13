@@ -12,26 +12,27 @@ pub fn solve_day9b() -> AoCResult<usize> {
 
     let content: Vec<_> = reader
         .lines()
-        .filter_map(|line_result| line_result.ok()?.parse::<usize>().ok())
-        .collect();
+        .map(|line| -> AoCResult<usize> { Ok(line?.parse()?) })
+        .collect::<Result<_, _>>()?;
 
-    let mut start: usize = 0;
-    let mut end: usize = 1;
-    let mut sum = content[0] + content[1];
+    let mut start = 0;
+    let mut end = 0;
+    let mut sum = 0;
 
     while end < content.len() {
         if sum < NUM {
-            end += 1;
             sum += content[end];
+            end += 1;
         } else if sum > NUM {
             sum -= content[start];
             start += 1;
         } else {
-            let min = content[start..=end].iter().min().unwrap();
-            let max = content[start..=end].iter().max().unwrap();
+            let range = &content[start..end];
+            let min = range.iter().min().unwrap();
+            let max = range.iter().max().unwrap();
             return Ok(min + max);
         }
     }
 
-    return Err("not found".into());
+    Err("not found".into())
 }
