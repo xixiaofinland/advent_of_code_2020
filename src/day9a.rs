@@ -1,6 +1,7 @@
 use crate::AoCResult;
 use std::{
     collections::HashSet,
+    collections::VecDeque,
     fs::File,
     io::{BufRead, BufReader},
 };
@@ -15,31 +16,30 @@ pub fn solve_day9a() -> AoCResult<usize> {
         .filter_map(|line_result| line_result.ok()?.parse::<usize>().ok())
         .collect();
 
-    let preceding_size = 25;
-    Ok(validate(preceding_size, &content))
-}
+    let queue_size = 25;
+    let mut queue = VecDeque::from(content[0..queue_size].to_vec());
 
-fn validate(preceding_size: usize, content: &[usize]) -> usize {
-    content
-        .iter()
-        .enumerate()
-        .skip(preceding_size + 1)
-        .find(|(i, item)| {
-            let collection = build_collection(*i, preceding_size, content);
-            !collection.contains(item)
-        })
-        .map(|(_, item)| item)
-        .copied()
-        .unwrap_or(0)
-}
-
-fn build_collection(index: usize, preceding_size: usize, content: &[usize]) -> HashSet<usize> {
-    let mut collection = HashSet::new();
-
-    for i in (index - preceding_size)..index {
-        for j in (i + 1)..index {
-            collection.insert(content[i] + content[j]);
+    for num in content[queue_size..].iter().copied() {
+        if validate(&queue, num) {
+            queue.pop_front();
+            queue.push_back(num);
+        } else {
+            return Ok(num);
         }
     }
-    collection
+
+    Ok(0)
+}
+
+fn validate(queue: &VecDeque<usize>, num: usize) -> bool {
+    let mut seen = HashSet::new();
+    queue.iter().any(|&x| {
+        let complement = num.saturating_sub(x);
+        if seen.contains(&complement) {
+            true
+        } else {
+            seen.insert(x);
+            false
+        }
+    })
 }

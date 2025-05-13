@@ -272,6 +272,11 @@ Use `find().map()` to return early in an iterator.
 When iter element is a reference `&`, it's more idiomatic to use `copied()` to
 get the value instead of deref.
 
+Use `iter().any()` in `validate()`: it is short-circuiting; in other words, it will stop processing
+as soon as it finds a `true`, given that no matter what else happens,
+the result will also be `true`.
+
+
 ## d9a performance:
 
 "remove oldest element sums and add the new" is the least computation way, but
