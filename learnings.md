@@ -294,3 +294,11 @@ The sliding window is smart! It requires 1) Contiguous Elements 2) All Positive
 Numbers
 
 # D10
+
+## d10a
+
+Learn Vec's `windows(n)`
+
+learn HashMap APIs: `diffs.entry(diff).or_default() -> &mut usize`
+
+Vec `sort()` v.s `sort_unstable()`
