@@ -292,3 +292,5 @@ sliding window also uses the "2-sum" problem solution with "one-pass" way (Day1)
 I couldn't figure out a good solution but relied on GPT.
 The sliding window is smart! It requires 1) Contiguous Elements 2) All Positive
 Numbers
+
+# D10

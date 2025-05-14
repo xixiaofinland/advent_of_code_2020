@@ -9,9 +9,10 @@ use aoc_2020::day8a::*;
 use aoc_2020::day8b::*;
 use aoc_2020::day9a::*;
 use aoc_2020::day9b::*;
+use aoc_2020::day10a::*;
 
 pub fn main() {
-    match solve_day9b() {
+    match solve_day10a() {
         Ok(count) => {
             println!("Result: {}", count);
         }
@@ -19,6 +20,14 @@ pub fn main() {
             eprintln!("Err: {}", e);
         }
     }
+    // match solve_day9b() {
+    //     Ok(count) => {
+    //         println!("Result: {}", count);
+    //     }
+    //     Err(e) => {
+    //         eprintln!("Err: {}", e);
+    //     }
+    // }
     // match solve_day9a() {
     //     Ok(count) => {
     //         println!("Result: {}", count);
