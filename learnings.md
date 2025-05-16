@@ -302,3 +302,15 @@ Learn Vec's `windows(n)`
 learn HashMap APIs: `diffs.entry(diff).or_default() -> &mut usize`
 
 Vec `sort()` v.s `sort_unstable()`
+
+## d10b
+
+The algorithm.
+
+`checked_sub()` for overflow prevention
+```rust
+        let c_sum = (1..=3)
+            .filter_map(|diff| c.checked_sub(diff))
+            .filter_map(|prev| ways.get(&prev))
+            .sum();
+```
