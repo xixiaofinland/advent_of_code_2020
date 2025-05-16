@@ -314,3 +314,17 @@ The algorithm.
             .filter_map(|prev| ways.get(&prev))
             .sum();
 ```
+
+For chained Option, `map()` v.s. `and_then()`
+
+```rust
+    adapters
+        .last()
+        .and_then(|jolt| ways.get(jolt).copied())
+        .ok_or_else(|| "No adapters found".into())
+
+    // adapters
+    //     .last()
+    //     .map(|&jolt| ways[&jolt])
+    //     .ok_or_else(|| "No adapters found".into())
+```
