@@ -328,3 +328,11 @@ For chained Option, `map()` v.s. `and_then()`
     //     .map(|&jolt| ways[&jolt])
     //     .ok_or_else(|| "No adapters found".into())
 ```
+
+# D11
+
+## d11a
+
+- `has_occupied_adjacent()`: idiomatic way to handle row and col boundaries
+- `four_or_more_adjacent_occupied()`: filter().count() is better than fold() in
+  this use- case
