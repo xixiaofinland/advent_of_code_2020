@@ -17,5 +17,4 @@ pub fn solve_day11a() -> AoCResult<usize> {
     Ok(0)
 }
 
-// fn calculate(index: (usize, usize), &mut ){
-// }
+fn calculate(index: (usize, usize), grid: &mut Vec<Vec<char>>) {}
