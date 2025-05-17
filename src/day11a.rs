@@ -19,6 +19,7 @@ pub fn solve_day11a() -> AoCResult<usize> {
 
     while has_grid_updated {
         has_grid_updated = false;
+        result = grid.clone();
 
         for (i, row) in grid.iter().enumerate() {
             for (j, _) in row.iter().enumerate() {
