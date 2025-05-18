@@ -5,8 +5,8 @@ use std::{
 };
 
 #[derive(Debug)]
-pub struct Instruct {
-    pub action: Action,
+struct Instruct {
+    action: Action,
 }
 
 #[derive(Debug)]
