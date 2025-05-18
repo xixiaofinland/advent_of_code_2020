@@ -14,7 +14,7 @@ const DIRECTIONS: [(isize, isize); 8] = [
 ];
 
 pub fn solve_day11a() -> AoCResult<usize> {
-    let file = File::open("data/input_day11a_simple.txt")?;
+    let file = File::open("data/input_day11a.txt")?;
     let reader = BufReader::new(file);
 
     let mut grid: Vec<Vec<char>> = reader
@@ -43,9 +43,9 @@ pub fn solve_day11a() -> AoCResult<usize> {
 
     display_grid(&grid);
 
-    Ok(next_grid
+    Ok(grid
         .iter()
-        .map(|row| row.iter().filter(|&&c| c == 'L').count())
+        .map(|row| row.iter().filter(|&&c| c == '#').count())
         .sum())
 }
 
