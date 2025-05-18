@@ -17,7 +17,7 @@ pub fn solve_day11a() -> AoCResult<usize> {
     let file = File::open("data/input_day11a_simple.txt")?;
     let reader = BufReader::new(file);
 
-    let mut grid: Vec<Vec<char>> = reader
+    let mut current_grid: Vec<Vec<char>> = reader
         .lines()
         .map(|line| -> AoCResult<Vec<char>> {
             let l = line?;
@@ -26,24 +26,22 @@ pub fn solve_day11a() -> AoCResult<usize> {
         .collect::<Result<_, _>>()?;
 
     let mut changed = true;
-    let mut next_grid = grid.clone();
+    let mut next_grid = current_grid.clone();
 
     while changed {
         changed = false;
-        next_grid = grid.clone();
+        next_grid = current_grid.clone();
 
-        for (i, row) in grid.iter().enumerate() {
+        for (i, row) in current_grid.iter().enumerate() {
             for (j, _) in row.iter().enumerate() {
-                calculate(i, j, &grid, &mut next_grid, &mut changed);
+                calculate(i, j, &current_grid, &mut next_grid, &mut changed);
             }
         }
 
-        grid = next_grid.clone();
+        std::mem::swap(&mut current_grid, &mut next_grid);
     }
 
-    for row in &next_grid {
-        println!("{}", row.iter().collect::<String>());
-    }
+    display_grid(&current_grid);
 
     Ok(next_grid
         .iter()
@@ -141,4 +139,10 @@ fn four_or_more_adjacent_occupied(row: usize, col: usize, grid: &[Vec<char>]) ->
     // });
     //
     // count >= 4
+}
+
+fn display_grid(grid: &[Vec<char>]) {
+    for row in grid {
+        println!("{}", row.iter().collect::<String>());
+    }
 }

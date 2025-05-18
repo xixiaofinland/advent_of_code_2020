@@ -337,3 +337,4 @@ For chained Option, `map()` v.s. `and_then()`
 - `four_or_more_adjacent_occupied()`: filter().count() is better than fold() in
   this use-case
 - `matches!` v.s. match-pattern in `calculate()`
+- `std::mem:swap()` instead of `.clone()` after each loop
