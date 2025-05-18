@@ -2,7 +2,7 @@ use crate::AoCResult;
 use std::{fs::File, io::{BufRead, BufReader}};
 
 pub fn solve_day12a() -> AoCResult<usize> {
-    let file = File::open("data/input_day8a_simple.txt")?;
+    let file = File::open("data/input_day12a_simple.txt")?;
     let reader = BufReader::new(file);
     for line in reader.lines(){
         let line = line?;
