@@ -1,36 +1,42 @@
 use crate::AoCResult;
-use std::{fs::File, io::{BufRead, BufReader}};
+use std::{
+    fs::File,
+    io::{BufRead, BufReader},
+};
 
-pub struct Instruct{
-    direct: Direct,
-    num: usize,
+#[derive(Debug)]
+pub struct Instruct {
+    action: Action,
 }
 
-enum Direct{
-    N,
-    S,
-    W,
-    E,
+#[derive(Debug)]
+enum Action {
+    N(usize),
+    S(usize),
+    W(usize),
+    E(usize),
+    F(usize),
+    L(usize),
+    R(usize),
 }
-
-// F10
-// N3
-// F7
-// R90
-// F11
 
 impl From<String> for Instruct {
     fn from(s: String) -> Self {
-        let (direct, num) = s.split_at(1);
-        let direct = match direct {
-            "N" => Direct::N,
-            "S" => Direct::S,
-            "W" => Direct::W,
-            "E" => Direct::E,
-            _ => panic!("Invalid direction"),
-        };
+        let (action, num) = s.split_at(1);
         let num = num.parse::<usize>().expect("Invalid number");
-        Instruct { direct, num }
+
+        let action = match action {
+            "N" => Action::N(num),
+            "S" => Action::S(num),
+            "W" => Action::W(num),
+            "E" => Action::E(num),
+            "F" => Action::F(num),
+            "L" => Action::F(num),
+            "R" => Action::F(num),
+            _ => panic!("Invalid action: {}", action),
+        };
+
+        Instruct { action }
     }
 }
 
@@ -38,10 +44,14 @@ pub fn solve_day12a() -> AoCResult<usize> {
     let file = File::open("data/input_day12a_simple.txt")?;
     let reader = BufReader::new(file);
 
-    let instructions = reader.lines().map(|line_result| -> AoCResult<Instruct>{
-        let line = line_result?;
+    let instructions = reader
+        .lines()
+        .map(|line_result| -> AoCResult<Instruct> {
+            let line = line_result?;
+            Ok(Instruct::from(line))
+        })
+        .collect::<Result<Vec<_>, _>>()?;
 
-    })
+    eprintln!("gopro[369]: day12a.rs:47: instructions={:#?}", instructions);
     Ok(0)
 }
-
