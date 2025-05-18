@@ -31,8 +31,8 @@ impl From<String> for Instruct {
             "W" => Action::W(num),
             "E" => Action::E(num),
             "F" => Action::F(num),
-            "L" => Action::F(num),
-            "R" => Action::F(num),
+            "L" => Action::L(num),
+            "R" => Action::R(num),
             _ => panic!("Invalid action: {}", action),
         };
 
