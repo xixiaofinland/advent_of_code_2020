@@ -335,4 +335,5 @@ For chained Option, `map()` v.s. `and_then()`
 
 - `has_occupied_adjacent()`: idiomatic way to handle row and col boundaries
 - `four_or_more_adjacent_occupied()`: filter().count() is better than fold() in
-  this use- case
+  this use-case
+- `matches!` v.s. match-pattern in `calculate()`
