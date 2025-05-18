@@ -17,7 +17,7 @@ pub fn solve_day11a() -> AoCResult<usize> {
     let file = File::open("data/input_day11a_simple.txt")?;
     let reader = BufReader::new(file);
 
-    let mut current_grid: Vec<Vec<char>> = reader
+    let mut grid: Vec<Vec<char>> = reader
         .lines()
         .map(|line| -> AoCResult<Vec<char>> {
             let l = line?;
@@ -26,22 +26,22 @@ pub fn solve_day11a() -> AoCResult<usize> {
         .collect::<Result<_, _>>()?;
 
     let mut changed = true;
-    let mut next_grid = current_grid.clone();
+    let mut next_grid = grid.clone();
 
     while changed {
         changed = false;
-        next_grid = current_grid.clone();
+        // next_grid = grid.clone();
 
-        for (i, row) in current_grid.iter().enumerate() {
-            for (j, _) in row.iter().enumerate() {
-                calculate(i, j, &current_grid, &mut next_grid, &mut changed);
+        for i in 0..grid.len() {
+            for j in 0..grid[i].len() {
+                calculate(i, j, &grid, &mut next_grid, &mut changed);
             }
         }
 
-        std::mem::swap(&mut current_grid, &mut next_grid);
+        std::mem::swap(&mut grid, &mut next_grid);
     }
 
-    display_grid(&current_grid);
+    display_grid(&grid);
 
     Ok(next_grid
         .iter()
@@ -53,15 +53,19 @@ fn calculate(
     row: usize,
     col: usize,
     grid: &[Vec<char>],
-    result: &mut [Vec<char>],
+    next_grid: &mut [Vec<char>],
     has_grid_updated: &mut bool,
 ) {
-    if matches!(grid[row][col], 'L') && !has_occupied_adjacent(row, col, grid) {
-        result[row][col] = '#';
+    if grid[row][col] == 'L' && !has_occupied_adjacent(row, col, grid) {
+        next_grid[row][col] = '#';
         *has_grid_updated = true;
-    } else if matches!(grid[row][col], '#') && four_or_more_adjacent_occupied(row, col, grid) {
-        result[row][col] = 'L';
+    } else if grid[row][col] == '#' && four_or_more_adjacent_occupied(row, col, grid) {
+        next_grid[row][col] = 'L';
         *has_grid_updated = true;
+    } else {
+        // important! As we do std::mem:swap() without clone() before each for loop step, this is
+        // needed to avoid stale values
+        next_grid[row][col] = grid[row][col];
     }
 
     // let cell_value = grid[row][col];
