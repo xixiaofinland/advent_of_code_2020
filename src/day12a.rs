@@ -6,33 +6,36 @@ use std::{
 
 #[derive(Debug)]
 pub struct Instruct {
-    action: Action,
+    pub action: Action,
 }
 
 #[derive(Debug)]
 enum Action {
-    N(usize),
-    S(usize),
-    W(usize),
-    E(usize),
-    F(usize),
-    L(usize),
-    R(usize),
+    N(i32),
+    S(i32),
+    W(i32),
+    E(i32),
+    F(i32),
+    L(i32),
+    R(i32),
 }
 
 impl From<String> for Instruct {
     fn from(s: String) -> Self {
         let (action, num) = s.split_at(1);
-        let num = num.parse::<usize>().expect("Invalid number");
+        let num = num.parse::<i32>().expect("Invalid number");
 
         let action = match action {
             "N" => Action::N(num),
             "S" => Action::S(num),
             "W" => Action::W(num),
             "E" => Action::E(num),
+
             "F" => Action::F(num),
+
             "L" => Action::L(num),
             "R" => Action::R(num),
+
             _ => panic!("Invalid action: {}", action),
         };
 
@@ -40,8 +43,9 @@ impl From<String> for Instruct {
     }
 }
 
+// clock-wise: 0 = North, 1 = East, 2 = South, 3 = West
 pub fn solve_day12a() -> AoCResult<usize> {
-    let file = File::open("data/input_day12a_simple.txt")?;
+    let file = File::open("data/input_day12a.txt")?;
     let reader = BufReader::new(file);
 
     let instructions = reader
@@ -52,6 +56,41 @@ pub fn solve_day12a() -> AoCResult<usize> {
         })
         .collect::<Result<Vec<_>, _>>()?;
 
-    eprintln!("gopro[369]: day12a.rs:47: instructions={:#?}", instructions);
-    Ok(0)
+    let mut state: (i32, (i32, i32)) = (1, (0, 0));
+
+    for instruct in instructions {
+        match instruct.action {
+            Action::N(n) => state.1.1 -= n,
+            Action::E(n) => state.1.0 += n,
+            Action::S(n) => state.1.1 += n,
+            Action::W(n) => state.1.0 -= n,
+
+            Action::L(n) => {
+                state.0 = turn(state.0, 'L', n);
+            }
+            Action::R(n) => {
+                state.0 = turn(state.0, 'R', n);
+            }
+
+            Action::F(n) => match state.0 {
+                0 => state.1.1 -= n,
+                1 => state.1.0 += n,
+                2 => state.1.1 += n,
+                3 => state.1.0 -= n,
+                _ => unreachable!(),
+            },
+        }
+    }
+
+    let result = state.1.0 + state.1.1;
+    Ok(result.try_into().unwrap())
+}
+
+fn turn(current: i32, turn: char, degrees: i32) -> i32 {
+    let steps = degrees / 90;
+    match turn {
+        'L' => (current + 4 - steps) % 4,
+        'R' => (current + steps) % 4,
+        _ => current,
+    }
 }
