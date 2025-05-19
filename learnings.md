@@ -338,3 +338,9 @@ For chained Option, `map()` v.s. `and_then()`
   this use-case
 - `matches!` v.s. match-pattern in `calculate()`
 - `std::mem:swap()` instead of `.clone()` after each loop
+
+# D12
+
+## d12a
+
+Easy assignment, but how to model and gpt version is still much better.
