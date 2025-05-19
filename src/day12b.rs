@@ -59,8 +59,8 @@ impl State {
     }
 }
 
-pub fn solve_day12a() -> AoCResult<usize> {
-    let file = File::open("data/input_day12a.txt")?;
+pub fn solve_day12b() -> AoCResult<usize> {
+    let file = File::open("data/input_day12a_simple.txt")?;
     let reader = BufReader::new(file);
 
     let actions = reader
