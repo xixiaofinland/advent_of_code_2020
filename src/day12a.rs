@@ -5,11 +5,6 @@ use std::{
 };
 
 #[derive(Debug)]
-struct Instruct {
-    action: Action,
-}
-
-#[derive(Debug)]
 enum Action {
     N(i32),
     S(i32),
@@ -20,77 +15,65 @@ enum Action {
     R(i32),
 }
 
-impl From<String> for Instruct {
-    fn from(s: String) -> Self {
-        let (action, num) = s.split_at(1);
-        let num = num.parse::<i32>().expect("Invalid number");
-
-        let action = match action {
+impl From<&str> for Action {
+    fn from(s: &str) -> Self {
+        let (action, val) = s.split_at(1);
+        let num = val.parse().expect("Invalid number");
+        match action {
             "N" => Action::N(num),
             "S" => Action::S(num),
             "W" => Action::W(num),
             "E" => Action::E(num),
-
             "F" => Action::F(num),
-
             "L" => Action::L(num),
             "R" => Action::R(num),
-
             _ => panic!("Invalid action: {}", action),
-        };
-
-        Instruct { action }
+        }
     }
 }
 
-// clock-wise: 0 = North, 1 = East, 2 = South, 3 = West
-pub fn solve_day12a() -> AoCResult<usize> {
-    let file = File::open("data/input_day12a.txt")?;
-    let reader = BufReader::new(file);
+#[derive(Debug)]
+struct State {
+    dir: i32, // 0=N, 1=E, 2=S, 3=W
+    x: i32,
+    y: i32,
+}
 
-    let instructions = reader
-        .lines()
-        .map(|line_result| -> AoCResult<Instruct> {
-            let line = line_result?;
-            Ok(Instruct::from(line))
-        })
-        .collect::<Result<Vec<_>, _>>()?;
-
-    let mut state: (i32, (i32, i32)) = (1, (0, 0));
-
-    for instruct in instructions {
-        match instruct.action {
-            Action::N(n) => state.1.1 -= n,
-            Action::E(n) => state.1.0 += n,
-            Action::S(n) => state.1.1 += n,
-            Action::W(n) => state.1.0 -= n,
-
-            Action::L(n) => {
-                state.0 = turn(state.0, 'L', n);
-            }
-            Action::R(n) => {
-                state.0 = turn(state.0, 'R', n);
-            }
-
-            Action::F(n) => match state.0 {
-                0 => state.1.1 -= n,
-                1 => state.1.0 += n,
-                2 => state.1.1 += n,
-                3 => state.1.0 -= n,
+impl State {
+    fn apply(&mut self, action: Action) {
+        match action {
+            Action::N(n) => self.y -= n,
+            Action::S(n) => self.y += n,
+            Action::E(n) => self.x += n,
+            Action::W(n) => self.x -= n,
+            Action::L(n) => self.dir = (self.dir + 4 - n / 90) % 4,
+            Action::R(n) => self.dir = (self.dir + n / 90) % 4,
+            Action::F(n) => match self.dir {
+                0 => self.y -= n,
+                1 => self.x += n,
+                2 => self.y += n,
+                3 => self.x -= n,
                 _ => unreachable!(),
             },
         }
     }
-
-    let result = state.1.0 + state.1.1;
-    Ok(result.try_into().unwrap())
 }
 
-fn turn(current: i32, turn: char, degrees: i32) -> i32 {
-    let steps = degrees / 90;
-    match turn {
-        'L' => (current + 4 - steps) % 4,
-        'R' => (current + steps) % 4,
-        _ => current,
+pub fn solve_day12a() -> AoCResult<usize> {
+    let file = File::open("data/input_day12a.txt")?;
+    let reader = BufReader::new(file);
+
+    let actions = reader
+        .lines()
+        .map(|line| -> AoCResult<_> { Ok(Action::from(line?.as_str())) })
+        .collect::<Result<Vec<_>, _>>()?;
+
+    let mut state = State { dir: 1, x: 0, y: 0 };
+
+    for action in actions {
+        state.apply(action);
     }
+
+    Ok((state.x.abs() + state.y.abs()).try_into().unwrap())
 }
+
