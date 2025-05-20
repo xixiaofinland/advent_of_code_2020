@@ -344,3 +344,34 @@ For chained Option, `map()` v.s. `and_then()`
 ## d12a
 
 Easy assignment, but how to model and gpt version is still much better.
+
+# D13
+
+## d13a
+
+Instead of using .find(...) and losing the s, you can use .find_map(...) to
+return both the matching timestamp and its corresponding s
+
+```rust
+let (wait_time, s) = (minutes..)
+    .find_map(|timestamp| {
+        schedules
+            .iter()
+            .find(|&&s| timestamp % s == 0)
+            .map(|&s| (timestamp, s))
+    })
+    .unwrap();
+
+// let result = (minutes..)
+//     .into_iter()
+//     .find(|timestamp| {
+//         for s in &schedules {
+//             if timestamp % s == 0 {
+//                 return true;
+//             }
+//         }
+//         false
+//     })
+//     .unwrap();
+
+```
