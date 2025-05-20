@@ -375,3 +375,8 @@ let (wait_time, s) = (minutes..)
 //     .unwrap();
 
 ```
+
+`lines.flatten()` turns Iterator<Result<String, _>> into Iterator<String>,
+skipping errors.
+It’s a concise way to avoid `.unwrap()` spam, but be aware it suppresses IO
+errors, so use it only if you’re okay ignoring those.
