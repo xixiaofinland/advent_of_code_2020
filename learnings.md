@@ -380,3 +380,8 @@ let (wait_time, s) = (minutes..)
 skipping errors.
 It’s a concise way to avoid `.unwrap()` spam, but be aware it suppresses IO
 errors, so use it only if you’re okay ignoring those.
+
+## d13b
+
+Good to know CRT algorithm exists and what the problem is. But I don't focus on
+algorithm here.
