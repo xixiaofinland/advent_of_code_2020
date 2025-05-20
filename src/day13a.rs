@@ -9,13 +9,19 @@ pub fn solve_day13a() -> AoCResult<usize> {
     let reader = BufReader::new(file);
 
     let mut line_iter = reader.lines();
-    let minutes: usize = line_iter.next().unwrap().unwrap().parse().unwrap();
+    let earliest: usize = line_iter.next().unwrap().unwrap().parse().unwrap();
     let line2 = line_iter.next().unwrap().unwrap();
     let schedules: Vec<usize> = line2
         .split(',')
-        .filter(|&id| id != "x")
-        .map(|id| id.parse().unwrap())
+        .filter_map(|id| id.parse().ok())
         .collect();
+
+    // let schedules: Vec<usize> = line2
+    //     .split(',')
+    //     .filter(|&id| id != "x")
+    //     .map(|id| id.parse().unwrap())
+    //     .collect();
+
 
     // let result = (minutes..)
     //     .into_iter()
@@ -29,7 +35,7 @@ pub fn solve_day13a() -> AoCResult<usize> {
     //     })
     //     .unwrap();
 
-    let (wait_time, s) = (minutes..)
+    let (timestamp, bus_id) = (earliest..)
         .find_map(|timestamp| {
             schedules
                 .iter()
@@ -38,6 +44,6 @@ pub fn solve_day13a() -> AoCResult<usize> {
         })
         .unwrap();
 
-    let result = (wait_time - minutes) * s;
+    let result = (timestamp - earliest) * bus_id;
     Ok(result)
 }
