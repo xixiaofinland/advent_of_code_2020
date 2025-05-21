@@ -403,3 +403,15 @@ let schedules: Vec<Schedule> = line2
     })
     .collect();
 ```
+
+# D14
+
+## d14a
+
+bit calculation re-learn:
+- `& 0` force 0
+- `| 1` force 1
+- `& 1 -> | 0` keep the original
+
+Therefore, we construct the and_mask and or_mask bit by bit then apply
+`(value & and_mask) | or_mask`
