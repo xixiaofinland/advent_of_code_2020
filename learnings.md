@@ -415,3 +415,9 @@ bit calculation re-learn:
 
 Therefore, we construct the and_mask and or_mask bit by bit then apply
 `(value & and_mask) | or_mask`
+
+`'1' => or_mask |= 1 << i` and `'0' => and_mask &= !(1 << i)`
+patterns to learn:
+- To set bit i to 1: `value |= 1 << i;`
+- To set bit i to 0: `value &= !(1 << i);`
+- To flip bit i: `value ^= 1 << i;`
