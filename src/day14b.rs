@@ -1,9 +1,11 @@
 use crate::AoCResult;
 use std::{
-    collections::HashMap, fs::File, io::{BufRead, BufReader}
+    collections::HashMap,
+    fs::File,
+    io::{BufRead, BufReader},
 };
 
-pub fn solve_day14a() -> AoCResult<usize> {
+pub fn solve_day14b() -> AoCResult<usize> {
     let file = File::open("data/input_day14a.txt")?;
     let reader = BufReader::new(file);
 
