@@ -419,7 +419,7 @@ Therefore, we construct the and_mask and or_mask bit by bit then apply
 `'1' => or_mask |= 1 << i` and `'0' => and_mask &= !(1 << i)`
 
 patterns to learn:
-- To set bit i to 1: `value |= 1 << i;` (force bit to 1)
-- To set bit i to 0: `value &= !(1 << i);` (force bit to 0)
+- To set bit i : `value |= 1 << i;` (force bit to 1)
+- To clear bit i: `value &= !(1 << i);` (force bit to 0)
 - To flip bit i: `value ^= 1 << i;` (toggle the bit)
 - Read bit i: `(value >> i) & 1` (get bit as 0 or 1)
