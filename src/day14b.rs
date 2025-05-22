@@ -6,7 +6,7 @@ use std::{
 };
 
 pub fn solve_day14b() -> AoCResult<usize> {
-    let file = File::open("data/input_day14a.txt")?;
+    let file = File::open("data/input_day14a_simple.txt")?;
     let reader = BufReader::new(file);
 
     let mut memory: HashMap<u64, u64> = HashMap::new();
@@ -22,8 +22,7 @@ pub fn solve_day14b() -> AoCResult<usize> {
             let addr: u64 = line[left_bracket + 1..right_bracket].parse().unwrap();
             let value_str = line.split(" = ").nth(1).unwrap();
             let value: u64 = value_str.parse().unwrap();
-            let masked_value = apply_mask(&current_mask, value);
-            memory.insert(addr, masked_value);
+            apply_mask(addr, &current_mask, value, &mut memory);
         }
     }
 
@@ -31,16 +30,30 @@ pub fn solve_day14b() -> AoCResult<usize> {
     Ok(sum as usize)
 }
 
-fn apply_mask(mask: &str, value: u64) -> u64 {
-    let mut or_mask = 0u64;
-    let mut and_mask = !0u64; // All bits 1
+fn apply_mask(addr: u64, mask: &str, value: u64, memory: &mut HashMap<u64, u64>) {
+    let mut base_addr = addr;
+    let mut floating_bits = vec![];
+
     for (i, c) in mask.chars().rev().enumerate() {
         match c {
-            '1' => or_mask |= 1 << i,
-            '0' => and_mask &= !(1 << i),
-            'X' => (), // leave unchanged
+            '0' => {}                     // leave unchanged
+            '1' => base_addr |= 1 << i,   // force to 1
+            'X' => floating_bits.push(i), // floating bit
             _ => panic!("Invalid mask character"),
         }
     }
-    (value & and_mask) | or_mask
+
+    let combinations = 1 << floating_bits.len(); // 2^n combinations
+    for n in 0..combinations {
+        let mut floating_addr = base_addr;
+        for (bit_idx, &bit_pos) in floating_bits.iter().enumerate() {
+            let bit_val = (n >> bit_idx) & 1;
+            if bit_val == 1 {
+                floating_addr |= 1 << bit_pos;
+            } else {
+                floating_addr &= !(1 << bit_pos);
+            }
+        }
+        memory.insert(floating_addr, value);
+    }
 }
