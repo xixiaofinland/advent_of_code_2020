@@ -6,7 +6,7 @@ use std::{
 };
 
 pub fn solve_day14b() -> AoCResult<usize> {
-    let file = File::open("data/input_day14a_simple.txt")?;
+    let file = File::open("data/input_day14a.txt")?;
     let reader = BufReader::new(file);
 
     let mut memory: HashMap<u64, u64> = HashMap::new();
