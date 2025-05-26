@@ -428,3 +428,21 @@ patterns to learn:
 
 ## d15a
 compare two solutions
+- pay attention to `by_ref()` in iterator
+
+## d15b
+
+using Vec<usize> to replace HashMap. It trades space for speed.
+
+HashMap is amortized O(1) but involves hashing, probing, and more pointer
+indirection than raw array access.
+
+"You don’t really need to pre-allocate all 30_000_000 slots unless you expect
+numbers spoken to reach that high. Often a safe size like 32_000_000 covers all
+cases. You could also grow dynamically like:
+
+```rust
+if current >= last_seen.len() {
+    last_seen.resize(current + 1, 0);
+}
+```

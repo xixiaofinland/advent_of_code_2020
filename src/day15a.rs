@@ -12,7 +12,7 @@ pub fn solve_day15a() -> AoCResult<usize> {
 
     let (_, mut current) = iter.next().unwrap(); // last starting number
 
-    for turn in starting_numbers.len()..2020 {
+    for turn in starting_numbers.len()..30000000 {
         let next = match last_seen.insert(current, turn) {
             Some(prev_turn) => turn - prev_turn,
             None => 0,
