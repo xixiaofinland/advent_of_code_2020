@@ -4,16 +4,21 @@ use std::collections::HashMap;
 pub fn solve_day15a() -> AoCResult<usize> {
     let mut nums: HashMap<usize, usize> = HashMap::new();
 
-    let init_inputs = [0, 20, 7, 16, 1, 18];
+    let init_inputs = [1, 3];
 
     init_inputs.iter().enumerate().for_each(|(i, &n)| {
         nums.insert(n, i + 1);
     });
 
-    let mut num = 15;
-    let mut index = init_inputs.len() + 1;
+    let mut num = 2;
+    let mut index = 3;
+
+    // let mut count = 3;
 
     while index <= 2020 {
+        eprintln!("gopro[384]: day15a.rs:17: index={:#?}", index);
+        eprintln!("gopro[381]: day15a.rs:16: next_num={:#?}", num);
+        println!();
         if let Some(v) = nums.insert(num, index) {
             num = index - v;
         } else {
