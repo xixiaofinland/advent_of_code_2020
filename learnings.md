@@ -423,3 +423,8 @@ patterns to learn:
 - To clear bit i: `value &= !(1 << i);` (force bit to 0)
 - To flip bit i: `value ^= 1 << i;` (toggle the bit)
 - Read bit i: `(value >> i) & 1` (get bit as 0 or 1)
+
+# D15
+
+## d15a
+compare two solutions
