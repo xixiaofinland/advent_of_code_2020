@@ -3,29 +3,39 @@ use std::fs;
 use crate::AoCResult;
 
 pub fn solve_day16a() -> AoCResult<usize> {
-    let file = fs::read_to_string("data/input_day16a_simple.txt")?;
+    let file = fs::read_to_string("data/input_day16a.txt")?;
     let mut chunks = file.split("\n\n");
 
+    let mut ranges: Vec<(usize, usize)> = Vec::new();
     for line in chunks.next().unwrap().split("\n") {
-        let mut nums = line
-            .split(": ")
-            .skip(1)
-            .next()
-            .unwrap()
-            .split(" or ")
-            .skip(1)
-            .next()
-            .unwrap()
-            .split("-");
-        println!("{}", nums.next().unwrap());
-        println!("{}", nums.next().unwrap());
-        println!();
+        let mut nums_iter = line.split(": ").skip(1).next().unwrap().split(" or ");
+
+        let mut nums = nums_iter.next().unwrap().split("-");
+        ranges.push((nums.next().unwrap().parse()?, nums.next().unwrap().parse()?));
+
+        let mut nums = nums_iter.next().unwrap().split("-");
+        ranges.push((nums.next().unwrap().parse()?, nums.next().unwrap().parse()?));
     }
 
-    for line in chunks.skip(1).next().unwrap().split("\n") {
-        let nearby_nums: Vec<_> = line.split(",").collect();
-        eprintln!("gopro[388]: day16a.rs:26: nearby_nums={:#?}", nearby_nums);
+    let mut combined = vec![];
+    for line in chunks.skip(1).next().unwrap().split("\n").skip(1) {
+        let nearby_nums: Vec<usize> = line
+            .split(",")
+            .filter(|line| !line.is_empty())
+            .map(|n| n.parse().unwrap())
+            .collect();
+        combined.extend(nearby_nums);
     }
 
-    Ok(0)
+    let result = combined
+        .iter()
+        .filter(|&c| {
+            let check_result = !ranges
+                .iter()
+                .any(|(start, end)| (*start..=*end).contains(c));
+            check_result
+        })
+        .sum();
+
+    Ok(result)
 }
