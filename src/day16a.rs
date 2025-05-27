@@ -29,10 +29,7 @@ pub fn solve_day16a() -> AoCResult<usize> {
 
     let result = combined
         .iter()
-        .filter(|&c| {
-            let check_result = !ranges.iter().any(|r| r.contains(c));
-            check_result
-        })
+        .filter(|&c| !ranges.iter().any(|r| r.contains(c)))
         .sum();
 
     Ok(result)
