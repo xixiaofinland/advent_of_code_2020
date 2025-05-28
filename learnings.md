@@ -446,3 +446,10 @@ if current >= last_seen.len() {
     last_seen.resize(current + 1, 0);
 }
 ```
+
+# D16
+
+## d16a
+compare two solutions
+- use `.lines()` over `.split("\n")`
+- use `.flat_map()` when one line produces intoIterator items and then collect.

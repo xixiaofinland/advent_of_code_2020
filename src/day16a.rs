@@ -1,8 +1,42 @@
-use std::fs;
+use std::{fs, ops::RangeInclusive};
 
 use crate::AoCResult;
 
 pub fn solve_day16a() -> AoCResult<usize> {
+    let file = fs::read_to_string("data/input_day16a.txt")?;
+    let mut chunks = file.split("\n\n");
+
+    let ranges: Vec<RangeInclusive<usize>> = chunks
+        .next()
+        .unwrap()
+        .lines()
+        .flat_map(|line| {
+            let (_, rest) = line.split_once(": ").unwrap();
+            rest.split(" or").map(|part| {
+                let (start, end) = part.trim().split_once('-').unwrap();
+                start.parse::<usize>().unwrap()..=end.parse::<usize>().unwrap()
+            })
+        })
+        .collect();
+
+    let nearby_values = chunks
+        .skip(1)
+        .next()
+        .unwrap()
+        .lines()
+        .skip(1)
+        .flat_map(|line| line.split(',').filter_map(|n| n.parse::<usize>().ok()))
+        .collect::<Vec<_>>();
+
+    let result = nearby_values
+        .iter()
+        .filter(|&v| !ranges.iter().any(|r| r.contains(v)))
+        .sum();
+
+    Ok(result)
+}
+
+pub fn solve_day16a_my() -> AoCResult<usize> {
     let file = fs::read_to_string("data/input_day16a.txt")?;
     let mut chunks = file.split("\n\n");
 
