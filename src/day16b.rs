@@ -65,7 +65,7 @@ pub fn solve_day16b() -> AoCResult<usize> {
     }
 
     let mut sorted_fields: Vec<_> = map.into_iter().collect();
-    sorted_fields.sort_by_key(|&(_, ref v)| v.len());
+    sorted_fields.sort_by_key(|(_, v)| v.len());
 
     let mut result = Vec::new();
     while !sorted_fields.is_empty() {
