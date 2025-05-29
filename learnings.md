@@ -455,5 +455,7 @@ compare two solutions
 - use `.flat_map()` when one line produces intoIterator items and then collect.
 
 ## d16b
-compare two solutions
-- especially after `while` section, how to do it idiomatically
+compare two solutions, especially after `while` section, how to do it idiomatically.
+- `nth(1)` is clearer than `skip(1).next()`
+- Used `then_some()` for cleaner optional filtering.
+- Pattern-matched first item in loop for better readability and error detection.
