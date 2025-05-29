@@ -1,3 +1,6 @@
+# TO-DO
+- retrospectively check what crates like itertools can facilitate.
+
 # D1
 ## ok() to turn Reuslt to Option in filter_map()
 - use `?` to return quick
@@ -461,3 +464,11 @@ compare two solutions, especially after `while` section, how to do it idiomatica
 - Pattern-matched first item in loop: `while let Some((col_idx, candidates)) = sorted_fields.first() {` v.s. `while !sorted_fields.is_empty() {`
 - `.retain()` is very similar to `.filter()`, but it modifies the vector in-place
   instead of returning a new collection.
+
+# D17
+
+## d17a
+Getting difficult as the requirements need to be flipped and then implmented
+with multiple dimensions.
+
+

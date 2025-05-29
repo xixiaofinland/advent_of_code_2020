@@ -28,20 +28,6 @@ pub fn solve_day17a() -> AoCResult<usize> {
     Ok(active.len())
 }
 
-fn get_neighbors(coord: Coord) -> Vec<Coord> {
-    let mut neighbors = Vec::new();
-    for dx in -1..=1 {
-        for dy in -1..=1 {
-            for dz in -1..=1 {
-                if dx != 0 || dy != 0 || dz != 0 {
-                    neighbors.push((coord.0 + dx, coord.1 + dy, coord.2 + dz));
-                }
-            }
-        }
-    }
-    neighbors
-}
-
 fn simulate_cycle(active: &HashSet<Coord>) -> HashSet<Coord> {
     let mut neighbor_counts = std::collections::HashMap::new();
 
@@ -61,4 +47,18 @@ fn simulate_cycle(active: &HashSet<Coord>) -> HashSet<Coord> {
             }
         })
         .collect()
+}
+
+fn get_neighbors(coord: Coord) -> Vec<Coord> {
+    let mut neighbors = Vec::new();
+    for dx in -1..=1 {
+        for dy in -1..=1 {
+            for dz in -1..=1 {
+                if dx != 0 || dy != 0 || dz != 0 {
+                    neighbors.push((coord.0 + dx, coord.1 + dy, coord.2 + dz));
+                }
+            }
+        }
+    }
+    neighbors
 }
