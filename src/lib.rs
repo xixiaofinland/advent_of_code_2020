@@ -23,5 +23,6 @@ pub mod day15a;
 pub mod day15b;
 pub mod day16a;
 pub mod day16b;
+pub mod day17a;
 
 pub type AoCResult<T> = Result<T, Box<dyn std::error::Error>>;
