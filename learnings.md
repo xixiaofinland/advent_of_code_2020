@@ -453,3 +453,7 @@ if current >= last_seen.len() {
 compare two solutions
 - use `.lines()` over `.split("\n")`
 - use `.flat_map()` when one line produces intoIterator items and then collect.
+
+## d16b
+compare two solutions
+- especially after `while` section, how to do it idiomatically
