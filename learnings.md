@@ -458,4 +458,6 @@ compare two solutions
 compare two solutions, especially after `while` section, how to do it idiomatically.
 - `nth(1)` is clearer than `skip(1).next()`
 - Used `then_some()` for cleaner optional filtering.
-- Pattern-matched first item in loop for better readability and error detection.
+- Pattern-matched first item in loop: `while let Some((col_idx, candidates)) = sorted_fields.first() {` v.s. `while !sorted_fields.is_empty() {`
+- `.retain()` is very similar to `.filter()`, but it modifies the vector in-place
+  instead of returning a new collection.
