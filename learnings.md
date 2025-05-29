@@ -471,6 +471,8 @@ compare two solutions, especially after `while` section, how to do it idiomatica
 Getting difficult as the requirements need to be flipped and then implmented
 with multiple dimensions.
 
+- learn how to model the expanding discrete dimension nodes using `HashSet` and
+  `HashMap`
 - check `iproduct!` from itertools crate
 
 
