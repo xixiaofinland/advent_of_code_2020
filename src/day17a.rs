@@ -1,3 +1,4 @@
+use itertools::iproduct;
 use crate::AoCResult;
 use std::collections::HashSet;
 use std::{
@@ -8,7 +9,7 @@ use std::{
 type Coord = (i32, i32, i32);
 
 pub fn solve_day17a() -> AoCResult<usize> {
-    let file = File::open("data/input_day17a_simple.txt")?;
+    let file = File::open("data/input_day17a.txt")?;
     let reader = BufReader::new(file);
 
     let mut active = HashSet::new();
@@ -32,7 +33,7 @@ fn simulate_cycle(active: &HashSet<Coord>) -> HashSet<Coord> {
     let mut neighbor_counts = std::collections::HashMap::new();
 
     for &cube in active {
-        for neighbor in get_neighbors(cube) {
+        for neighbor in get_neighbors_iter(cube) {
             *neighbor_counts.entry(neighbor).or_insert(0) += 1;
         }
     }
@@ -61,4 +62,11 @@ fn get_neighbors(coord: Coord) -> Vec<Coord> {
         }
     }
     neighbors
+}
+
+fn get_neighbors_iter((x, y, z): Coord) -> Vec<Coord> {
+    iproduct!(-1..=1, -1..=1, -1..=1)
+        .filter(|&(dx, dy, dz)| dx != 0 || dy != 0 || dz != 0)
+        .map(|(dx, dy, dz)| (x + dx, y + dy, z + dz))
+        .collect()
 }
