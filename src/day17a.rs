@@ -1,5 +1,5 @@
-use itertools::iproduct;
 use crate::AoCResult;
+use itertools::iproduct;
 use std::collections::HashSet;
 use std::{
     fs::File,
@@ -50,13 +50,13 @@ fn simulate_cycle(active: &HashSet<Coord>) -> HashSet<Coord> {
         .collect()
 }
 
-fn get_neighbors(coord: Coord) -> Vec<Coord> {
+fn get_neighbors((x, y, z): Coord) -> Vec<Coord> {
     let mut neighbors = Vec::new();
     for dx in -1..=1 {
         for dy in -1..=1 {
             for dz in -1..=1 {
                 if dx != 0 || dy != 0 || dz != 0 {
-                    neighbors.push((coord.0 + dx, coord.1 + dy, coord.2 + dz));
+                    neighbors.push((x + dx, y + dy, z + dz));
                 }
             }
         }
