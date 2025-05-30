@@ -475,4 +475,7 @@ with multiple dimensions.
   `HashMap`
 - check `iproduct!` from itertools crate
 
+## d17b
+Nothing new
 
+# D18
