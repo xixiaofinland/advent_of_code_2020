@@ -479,3 +479,7 @@ with multiple dimensions.
 Nothing new
 
 # D18
+
+## d18a
+- `.try_fold()` (which is short-circuiting) v.s. `Vec<Vec<_>>` + `flatten()`
+- `strip_prefix()` and `strip_suffix()`
