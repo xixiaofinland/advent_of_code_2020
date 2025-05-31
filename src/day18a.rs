@@ -10,13 +10,15 @@ pub fn solve_day18a() -> AoCResult<usize> {
     let file = File::open("data/input_day18a_simple.txt")?;
     let reader = BufReader::new(file);
 
+    let re = Regex::new(r"\(|\)|\w+").unwrap();
+
     let tokens: Vec<Vec<_>> = reader
         .lines()
         .map(|line| -> AoCResult<_> {
             line?
                 .split_whitespace()
                 .try_fold(Vec::new(), |mut acc, element| -> AoCResult<_> {
-                    acc.extend(split_token_regex(element).into_iter().map(String::from));
+                    acc.extend(re.find_iter(element).map(|m| m.as_str().to_string()));
                     Ok(acc)
                 })
         })
@@ -24,11 +26,6 @@ pub fn solve_day18a() -> AoCResult<usize> {
 
     eprintln!("gopro[408]: day18a.rs:10: tokens={:#?}", tokens);
     Ok(0)
-}
-
-fn split_token_regex(element: &str) -> Vec<&str> {
-    let re = Regex::new(r"\(|\)|\w+").unwrap(); // matches '(', ')' or any word/number
-    re.find_iter(element).map(|m| m.as_str()).collect()
 }
 
 fn split_token(element: &str) -> Vec<&str> {
