@@ -483,5 +483,5 @@ Nothing new
 ## d18a
 - `.try_fold()` (which is short-circuiting) v.s. `Vec<Vec<_>>` + `flatten()`
 - `strip_prefix()` and `strip_suffix()`
-
-regex crate is much cleaner to parse the token!
+- regex crate is much cleaner to parse the token! Compare it with `fn split_token`
+- understand `expr -> operand -> op` nesting in the parsing logic.

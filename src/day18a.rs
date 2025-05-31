@@ -29,6 +29,10 @@ pub fn solve_day18a() -> AoCResult<usize> {
     Ok(sum)
 }
 
+// expr    = operand (op operand)*
+// operand = number | '(' expr ')'
+// op      = '+' | '*'
+
 fn parse_expr<I>(tokens: &mut I) -> usize
 where
     I: Iterator<Item = String>,
