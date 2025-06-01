@@ -2,6 +2,7 @@ use regex::Regex;
 use std::{
     fs::File,
     io::{BufRead, BufReader},
+    iter::Peekable,
 };
 
 use crate::AoCResult;
@@ -20,7 +21,8 @@ pub fn solve_day18b() -> AoCResult<usize> {
                 .find_iter(&line)
                 .map(|m| m.as_str().to_string())
                 .collect();
-            Ok(parse_expr(&mut tokens.into_iter()))
+            let mut iter = tokens.into_iter().peekable();
+            Ok(parse_expr(&mut iter))
         })
         .collect::<Result<Vec<_>, _>>()?
         .into_iter()
@@ -29,67 +31,58 @@ pub fn solve_day18b() -> AoCResult<usize> {
     Ok(sum)
 }
 
-// expr    = operand (op operand)*
-// operand = number | '(' expr ')'
-// op      = '+' | '*'
-
-fn parse_expr<I>(tokens: &mut I) -> usize
+// expr = term ('*' term)*
+fn parse_expr<I>(tokens: &mut Peekable<I>) -> usize
 where
     I: Iterator<Item = String>,
 {
-    let mut acc = parse_operand(tokens);
+    let mut acc = parse_term(tokens);
 
-    while let Some(op) = tokens.next() {
-        if op == ")" {
+    while let Some(op) = tokens.peek() {
+        if op == "*" {
+            tokens.next(); // consume '*'
+            let rhs = parse_term(tokens);
+            acc *= rhs;
+        } else {
             break;
         }
-
-        let rhs = parse_operand(tokens);
-
-        acc = match op.as_str() {
-            "+" => acc + rhs,
-            "*" => acc * rhs,
-            _ => panic!("Unknown operator: {}", op),
-        };
     }
 
     acc
 }
 
-fn parse_operand<I>(tokens: &mut I) -> usize
+// term = factor ('+' factor)*
+fn parse_term<I>(tokens: &mut Peekable<I>) -> usize
+where
+    I: Iterator<Item = String>,
+{
+    let mut acc = parse_factor(tokens);
+
+    while let Some(op) = tokens.peek() {
+        if op == "+" {
+            tokens.next(); // consume '+'
+            let rhs = parse_factor(tokens);
+            acc += rhs;
+        } else {
+            break;
+        }
+    }
+
+    acc
+}
+
+// factor = number | '(' expr ')'
+fn parse_factor<I>(tokens: &mut Peekable<I>) -> usize
 where
     I: Iterator<Item = String>,
 {
     match tokens.next().as_deref() {
-        Some("(") => parse_expr(tokens),
+        Some("(") => {
+            let value = parse_expr(tokens);
+            assert_eq!(tokens.next().as_deref(), Some(")"));
+            value
+        }
         Some(num) if num.chars().all(char::is_numeric) => num.parse().unwrap(),
-        Some(")") => panic!("Unexpected `)` when expecting operand"),
-        other => panic!("Unexpected operand: {:?}", other),
+        other => panic!("Unexpected factor: {:?}", other),
     }
 }
-
-fn split_token(element: &str) -> Vec<&str> {
-    let mut tokens = Vec::new();
-    let mut remaining = element;
-
-    while let Some(rest) = remaining.strip_prefix('(') {
-        tokens.push("(");
-        remaining = rest;
-    }
-
-    let mut suffixes = Vec::new();
-    while let Some(rest) = remaining.strip_suffix(')') {
-        suffixes.push(")");
-        remaining = rest;
-    }
-
-    if !remaining.is_empty() {
-        tokens.push(remaining);
-    }
-
-    // Add any trailing ')' we found (in order)
-    tokens.extend(suffixes.into_iter().rev());
-
-    tokens
-}
-
