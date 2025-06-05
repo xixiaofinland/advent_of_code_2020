@@ -52,35 +52,10 @@ pub fn solve_day19a() -> AoCResult<usize> {
 
     let valid_count = to_checkes
         .iter()
-        .filter(|&&message| match_rule_imperative(0, &rules_map, message).contains(&""))
+        .filter(|&&message| match_rule(0, &rules_map, message).contains(&""))
         .count();
 
     Ok(valid_count)
-}
-
-fn match_rule<'a>(rule_id: usize, rules: &HashMap<usize, Rule>, message: &'a str) -> Vec<&'a str> {
-    match &rules[&rule_id] {
-        Rule::Literal(c) => message
-            .strip_prefix(*c)
-            .map_or(vec![], |remainder| vec![remainder]),
-
-        Rule::Sequence(seq) => seq.iter().fold(vec![message], |acc, &rule| {
-            acc.into_iter()
-                .flat_map(|msg| match_rule(rule, rules, msg))
-                .collect()
-        }),
-
-        Rule::Alternative(alternatives) => alternatives
-            .iter()
-            .flat_map(|seq| {
-                seq.iter().fold(vec![message], |acc, &rule| {
-                    acc.into_iter()
-                        .flat_map(|msg| match_rule(rule, rules, msg))
-                        .collect()
-                })
-            })
-            .collect(),
-    }
 }
 
 fn match_rule_imperative<'a>(
@@ -145,5 +120,30 @@ fn match_rule_imperative<'a>(
 
             all_remainders
         }
+    }
+}
+
+fn match_rule<'a>(rule_id: usize, rules: &HashMap<usize, Rule>, message: &'a str) -> Vec<&'a str> {
+    match &rules[&rule_id] {
+        Rule::Literal(c) => message
+            .strip_prefix(*c)
+            .map_or(vec![], |remainder| vec![remainder]),
+
+        Rule::Sequence(seq) => seq.iter().fold(vec![message], |acc, &rule| {
+            acc.into_iter()
+                .flat_map(|msg| match_rule(rule, rules, msg))
+                .collect()
+        }),
+
+        Rule::Alternative(alternatives) => alternatives
+            .iter()
+            .flat_map(|seq| {
+                seq.iter().fold(vec![message], |acc, &rule| {
+                    acc.into_iter()
+                        .flat_map(|msg| match_rule(rule, rules, msg))
+                        .collect()
+                })
+            })
+            .collect(),
     }
 }
