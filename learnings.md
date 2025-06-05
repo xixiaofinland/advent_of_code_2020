@@ -486,3 +486,11 @@ Nothing new
 - regex crate is much cleaner to parse the token! Compare it with `fn split_token`
 - understand `expr -> operand -> op` nesting in the parsing logic. Elegent for
   this problem!
+
+# D19
+
+## d19a
+
+Study `match_rule_imperative()` first as a stepping stone to understand the
+functional `match_rule()`
+

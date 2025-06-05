@@ -50,6 +50,100 @@ pub fn solve_day19a() -> AoCResult<usize> {
     let rules_map: HashMap<usize, Rule> = rules_vec.into_iter().collect();
     let to_checkes: Vec<&str> = combinations.lines().collect();
 
-    Ok(0)
+    let valid_count = to_checkes
+        .iter()
+        .filter(|&&message| match_rule_imperative(0, &rules_map, message).contains(&""))
+        .count();
+
+    Ok(valid_count)
 }
 
+fn match_rule<'a>(rule_id: usize, rules: &HashMap<usize, Rule>, message: &'a str) -> Vec<&'a str> {
+    match &rules[&rule_id] {
+        Rule::Literal(c) => message
+            .strip_prefix(*c)
+            .map_or(vec![], |remainder| vec![remainder]),
+
+        Rule::Sequence(seq) => seq.iter().fold(vec![message], |acc, &rule| {
+            acc.into_iter()
+                .flat_map(|msg| match_rule(rule, rules, msg))
+                .collect()
+        }),
+
+        Rule::Alternative(alternatives) => alternatives
+            .iter()
+            .flat_map(|seq| {
+                seq.iter().fold(vec![message], |acc, &rule| {
+                    acc.into_iter()
+                        .flat_map(|msg| match_rule(rule, rules, msg))
+                        .collect()
+                })
+            })
+            .collect(),
+    }
+}
+
+fn match_rule_imperative<'a>(
+    rule_id: usize,
+    rules: &HashMap<usize, Rule>,
+    message: &'a str,
+) -> Vec<&'a str> {
+    match &rules[&rule_id] {
+        Rule::Literal(c) => {
+            if let Some(remainder) = message.strip_prefix(*c) {
+                vec![remainder]
+            } else {
+                vec![]
+            }
+        }
+
+        Rule::Sequence(seq) => {
+            let mut remainders = vec![message];
+
+            for &rule in seq {
+                let mut next_remainders = Vec::new();
+
+                for msg in &remainders {
+                    let results = match_rule(rule, rules, msg);
+                    next_remainders.extend(results);
+                }
+
+                remainders = next_remainders;
+
+                // Early exit if nothing matched
+                if remainders.is_empty() {
+                    break;
+                }
+            }
+
+            remainders
+        }
+
+        Rule::Alternative(alternatives) => {
+            let mut all_remainders = Vec::new();
+
+            for seq in alternatives {
+                let mut remainders = vec![message];
+
+                for &rule in seq {
+                    let mut next_remainders = Vec::new();
+
+                    for msg in &remainders {
+                        let results = match_rule(rule, rules, msg);
+                        next_remainders.extend(results);
+                    }
+
+                    remainders = next_remainders;
+
+                    if remainders.is_empty() {
+                        break;
+                    }
+                }
+
+                all_remainders.extend(remainders);
+            }
+
+            all_remainders
+        }
+    }
+}
