@@ -491,6 +491,9 @@ Nothing new
 
 ## d19a
 
-Study `match_rule_imperative()` first as a stepping stone to understand the
+- Study `match_rule_imperative()` first as a stepping stone to understand the
 functional `match_rule()`
+- there can be partial match situation: Did rule 0 match the entire message,
+  leaving nothing unconsumed?
+
 

@@ -9,7 +9,7 @@ enum Rule {
 }
 
 pub fn solve_day19a() -> AoCResult<usize> {
-    let file = fs::read_to_string("data/input_day19a_simple.txt")?;
+    let file = fs::read_to_string("data/input_day19a.txt")?;
     let (rules, combinations) = file.split_once("\n\n").ok_or_else(|| "can't split")?;
 
     let rules_vec = rules
