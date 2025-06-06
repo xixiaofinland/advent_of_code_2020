@@ -496,4 +496,11 @@ functional `match_rule()`
 - there can be partial match situation: Did rule 0 match the entire message,
   leaving nothing unconsumed?
 
+## d19b
+- I don't have the mood to finish this. Just don't feel like it :D. Skip!
+
+# D20
+
+## d20a
+
 
