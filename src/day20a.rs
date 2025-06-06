@@ -6,7 +6,7 @@ pub fn solve_day20a() -> AoCResult<usize> {
     let data: Vec<(usize, &str)> = file
         .split("\n\n")
         .map(|chunk| -> AoCResult<_> {
-            let tile_line = chunk.lines().next().ok_or("missing title line")?;
+            let (tile_line, tile_data) = chunk.split_once("\n").ok_or("data chunk can't split")?;
 
             let (_, tile_num) = tile_line
                 .strip_suffix(":")
@@ -16,8 +16,9 @@ pub fn solve_day20a() -> AoCResult<usize> {
 
             let tile_num = tile_num.parse::<usize>()?;
 
-            Ok((tile_num, chunk.lines().next().ok_or("no tile data")?))
+            Ok((tile_num, tile_data))
         })
         .collect::<Result<_, _>>()?;
+    eprintln!("gopro[417]: day20a.rs:6: data={:#?}", data);
     Ok(0)
 }
