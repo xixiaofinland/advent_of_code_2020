@@ -502,5 +502,17 @@ functional `match_rule()`
 # D20
 
 ## d20a
+I keep forgetting how to parse data from input file!
+`ok_or()` and `ok_or_else()` expect a type E that is compatible to Result<T, E>
+
+```rust
+let result: Result<i32, &str> = Some(42).ok_or("no value");
+let result: Result<i32, String> = Some(42).ok_or("no value".to_string());
+
+// it works because Box<dyn std::error::Error> has implemented From<&str>
+.map(|chunk| -> AoCResult<_> {
+    let tile_line = chunk.lines().next().ok_or("missing title line")?;
+})
+```
 
 
