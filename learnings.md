@@ -503,7 +503,7 @@ functional `match_rule()`
 
 ## d20a
 I keep forgetting how to parse data from input file!
-`ok_or()` and `ok_or_else()` expect a type E that is compatible to Result<T, E>
+- `ok_or()` and `ok_or_else()` expect a type E that is compatible to Result<T, E>
 
 ```rust
 let result: Result<i32, &str> = Some(42).ok_or("no value");
@@ -515,4 +515,7 @@ let result: Result<i32, String> = Some(42).ok_or("no value".to_string());
 })
 ```
 
-
+- HashMap's Key must be `Eq` and `Hash`.
+  - `Eq` is a marker trait, and must also implement `PartialEq`.
+  - `Eq` guarantees strict, reflexive, total equality. (f64 is not `Eq` as `f64::NAN != f64::NAN`)
+  - `PartialEq` lets you do `==` and `!=`.
