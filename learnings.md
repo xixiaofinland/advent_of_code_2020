@@ -515,7 +515,7 @@ let result: Result<i32, String> = Some(42).ok_or("no value".to_string());
 })
 ```
 
-- HashMap's Key must be `Eq` and `Hash`.
+- HashMap's Key must be `Eq` and `Hash`(make sense, right!?).
   - `Eq` is a marker trait, and must also implement `PartialEq`.
   - `Eq` guarantees strict, reflexive, total equality. (f64 is not `Eq` as `f64::NAN != f64::NAN`)
   - `PartialEq` lets you do `==` and `!=`.
