@@ -520,13 +520,16 @@ let result: Result<i32, String> = Some(42).ok_or("no value".to_string());
   - `Eq` guarantees strict, reflexive, total equality. (f64 is not `Eq` as `f64::NAN != f64::NAN`)
   - `PartialEq` lets you do `==` and `!=`.
 
-  ## d20b
-
+## d20b
   skip.
 
-  # D21
+# D21
 
-  ## d21a
+## d21a
   - `Hashmap.entry().or_insert_with()`
   - `candidates.retain(|ingredient| food.ingredients.contains(ingredient));`
     v.s. `*candidates = candidates.intersection(&food.ingredients).cloned().collect();`
+
+# D22
+
+## d22a
