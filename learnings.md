@@ -534,3 +534,9 @@ let result: Result<i32, String> = Some(42).ok_or("no value".to_string());
 
 ## d22a
 - use `VecDeque`: `pop_front()` and `push_back()`
+
+## d22b
+Solution done by GPT, learned:
+- Enum: `Player::One`, `Player::Two`
+- `play()` returns `(winner, winner_deck)`
+- Iterator: `.take().copied()`
