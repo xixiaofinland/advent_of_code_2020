@@ -1,4 +1,5 @@
 use itertools::Itertools;
+use std::collections::VecDeque;
 
 use crate::AoCResult;
 use std::fs;
@@ -9,13 +10,13 @@ pub fn solve_day22a() -> AoCResult<usize> {
         .split_once("\n\n")
         .ok_or_else(|| "cannot split_once correctly.")?;
 
-    let mut player1: Vec<usize> = player1_data
+    let mut player1: VecDeque<usize> = player1_data
         .lines()
         .skip(1)
         .map(|n| n.parse::<usize>())
         .collect::<Result<_, _>>()?;
 
-    let mut player2: Vec<usize> = player2_data
+    let mut player2: VecDeque<usize> = player2_data
         .lines()
         .skip(1)
         .map(|n| n.parse::<usize>())
@@ -39,16 +40,16 @@ pub fn solve_day22a() -> AoCResult<usize> {
     Ok(sum)
 }
 
-fn play(player1: &mut Vec<usize>, player2: &mut Vec<usize>) {
+fn play(player1: &mut VecDeque<usize>, player2: &mut VecDeque<usize>) {
     while !player1.is_empty() && !player2.is_empty() {
-        if player1[0] > player2[0] {
-            let first = player1.remove(0);
-            player1.push(first);
-            player1.push(player2.remove(0));
-        } else if player1[0] < player2[0] {
-            let first = player2.remove(0);
-            player2.push(first);
-            player2.push(player1.remove(0));
+        let card1 = player1.pop_front().unwrap();
+        let card2 = player2.pop_front().unwrap();
+        if card1 > card2 {
+            player1.push_back(card1);
+            player1.push_back(card2);
+        } else if card1 < card2 {
+            player2.push_back(card2);
+            player2.push_back(card1);
         } else {
             unreachable!()
         }
