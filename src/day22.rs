@@ -25,9 +25,9 @@ pub fn solve_day22a() -> AoCResult<usize> {
     play(&mut player1, &mut player2);
 
     let winner = if !player1.is_empty() {
-        player1
+        &player1
     } else {
-        player2
+        &player2
     };
 
     let sum: usize = winner
@@ -44,14 +44,33 @@ fn play(player1: &mut VecDeque<usize>, player2: &mut VecDeque<usize>) {
     while !player1.is_empty() && !player2.is_empty() {
         let card1 = player1.pop_front().unwrap();
         let card2 = player2.pop_front().unwrap();
-        if card1 > card2 {
-            player1.push_back(card1);
-            player1.push_back(card2);
-        } else if card1 < card2 {
-            player2.push_back(card2);
-            player2.push_back(card1);
-        } else {
-            unreachable!()
+
+        match card1.cmp(&card2) {
+            std::cmp::Ordering::Greater => {
+                player1.push_back(card1);
+                player1.push_back(card2);
+            }
+            std::cmp::Ordering::Less => {
+                player2.push_back(card2);
+                player2.push_back(card1);
+            }
+            std::cmp::Ordering::Equal => unreachable!(),
         }
     }
 }
+
+// fn play(player1: &mut VecDeque<usize>, player2: &mut VecDeque<usize>) {
+//     while !player1.is_empty() && !player2.is_empty() {
+//         let card1 = player1.pop_front().unwrap();
+//         let card2 = player2.pop_front().unwrap();
+//         if card1 > card2 {
+//             player1.push_back(card1);
+//             player1.push_back(card2);
+//         } else if card1 < card2 {
+//             player2.push_back(card2);
+//             player2.push_back(card1);
+//         } else {
+//             unreachable!()
+//         }
+//     }
+// }
