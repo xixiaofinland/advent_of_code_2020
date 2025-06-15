@@ -4,10 +4,11 @@ use crate::AoCResult;
 use std::fs;
 
 pub fn solve_day22a() -> AoCResult<usize> {
-    let file = fs::read_to_string("data/input_day22a_simple.txt")?;
+    let file = fs::read_to_string("data/input_day22a.txt")?;
     let (player1_data, player2_data) = file
         .split_once("\n\n")
         .ok_or_else(|| "cannot split_once correctly.")?;
+
     let mut player1: Vec<usize> = player1_data
         .lines()
         .skip(1)
@@ -20,7 +21,7 @@ pub fn solve_day22a() -> AoCResult<usize> {
         .map(|n| n.parse::<usize>())
         .collect::<Result<_, _>>()?;
 
-    calculate(&mut player1, &mut player2);
+    play(&mut player1, &mut player2);
 
     let winner = if !player1.is_empty() {
         player1
@@ -38,7 +39,7 @@ pub fn solve_day22a() -> AoCResult<usize> {
     Ok(sum)
 }
 
-fn calculate(player1: &mut Vec<usize>, player2: &mut Vec<usize>) {
+fn play(player1: &mut Vec<usize>, player2: &mut Vec<usize>) {
     while !player1.is_empty() && !player2.is_empty() {
         if player1[0] > player2[0] {
             let first = player1.remove(0);
