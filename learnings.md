@@ -540,3 +540,11 @@ Solution done by GPT, learned:
 - Enum: `Player::One`, `Player::Two`
 - `play()` returns `(winner, winner_deck)`
 - Iterator: `.take().copied()`
+
+# D23
+
+## d23a
+again good practice for `VecDeque`!
+- `Vec` is optimized for appending at the end (push / pop from the back): O(1).
+- `VecDeque` is optimized for both ends: push_front, pop_front, push_back,
+  pop_back — all O(1).
