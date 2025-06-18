@@ -548,3 +548,30 @@ again good practice for `VecDeque`!
 - `Vec` is optimized for appending at the end (push / pop from the back): O(1).
 - `VecDeque` is optimized for both ends: push_front, pop_front, push_back,
   pop_back — all O(1).
+
+  # D24
+
+  ## d24a
+- Hexagonal Grids to model the movement
+- using `struct Hex(i32, i32)`
+- Memory effeciency: parse the input with `Enum`, then use a `impl fn` to calculate
+the movement
+```rust
+#[derive(Debug, Clone, Copy)]
+enum Direction {
+    E, W, NE, NW, SE, SW
+}
+
+impl Direction {
+    fn delta(self) -> (i32, i32) {
+        match self {
+            Direction::E  => (1, 0),
+            Direction::W  => (-1, 0),
+            Direction::NE => (1, -1),
+            Direction::NW => (0, -1),
+            Direction::SE => (0, 1),
+            Direction::SW => (-1, 1),
+        }
+    }
+}
+```
