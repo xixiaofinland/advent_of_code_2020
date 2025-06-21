@@ -3,16 +3,6 @@ name = "aoc_2020"
 version = "0.1.0"
 edition = "2024"
 
-[dev-dependencies]
-criterion = "0.5.1"
-
-[profile.bench]
-opt-level = 0
-
-[[bench]]
-name = "bench_solution"
-harness = false
-
 [dependencies]
 itertools = "0.14.0"
 regex = "1.11.1"
