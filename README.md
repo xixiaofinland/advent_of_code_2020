@@ -1,5 +1,5 @@
-# TO-DO
-- retrospectively check what crates like itertools can facilitate.
+# Learnings
+It records what I learned in building the solutions
 
 # D1
 ## ok() to turn Reuslt to Option in filter_map()
