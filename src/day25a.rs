@@ -6,18 +6,17 @@ const MAX_LOOP: usize = 1000000000000;
 pub fn solve_day25a() -> AoCResult<usize> {
     let card_key = 14205034;
     let card_loop_size = get_loop_size(card_key, SUBJECT_7);
+    // let result2 = get_encrypt_key(card_key, door_loop_size);
 
     let door_key = 18047856;
-    let door_loop_size = get_loop_size(door_key, SUBJECT_7);
-
+    // let door_loop_size = get_loop_size(door_key, SUBJECT_7);
     let result = get_encrypt_key(door_key, card_loop_size);
-    let result2 = get_encrypt_key(card_key, door_loop_size);
 
     println!("{}", card_loop_size);
-    println!("{}", door_loop_size);
+    // println!("{}", door_loop_size);
 
     println!("{}", result);
-    println!("{}", result2);
+    // println!("{}", result2);
     Ok(result)
 }
 
