@@ -1,4 +1,4 @@
-use aoc_2020::day25a::*;
+use aoc_2020::days::*;
 
 pub fn main() {
     match solve_day25a() {

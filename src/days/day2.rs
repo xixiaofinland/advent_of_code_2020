@@ -15,6 +15,9 @@ pub fn solve_day2a() -> AoCResult<usize> {
             [range, char_part, password] => (range, char_part, password),
             _ => return Err("Invalid line format".into()),
         };
+        // or use this:
+        // let parts = line.split_whitespace().collect::<Vec<_>>();
+        // match parts.as_slice() {
 
         let (min, max) = {
             let (min, max) = range.split_once('-').ok_or("Invalid range format")?;
